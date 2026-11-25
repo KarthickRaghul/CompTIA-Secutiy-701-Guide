@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PBQ Trainer — SY0-701</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#12161b;
+  --panel:#191f26;
+  --panel-2:#1f2730;
+  --line:#2b343e;
+  --ink:#dde5ec;
+  --muted:#7e8b98;
+  --amber:#e8a33d;
+  --amber-dim:#4a3a20;
+  --cyan:#49c2b8;
+  --cyan-dim:#1c3735;
+  --danger:#e0645a;
+  --danger-dim:#3d2320;
+  --ok:#5fbf85;
+  --ok-dim:#1f3327;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'IBM Plex Sans',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  padding:28px 18px 60px;
+}
+.wrap{max-width:900px;margin:0 auto;}
+
+/* header */
+.topbar{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  border-bottom:1px solid var(--line);
+  padding-bottom:16px;margin-bottom:28px;flex-wrap:wrap;gap:14px;
+}
+.topbar h1{
+  font-family:var(--font-display);
+  font-size:22px;font-weight:700;margin:0 0 4px;letter-spacing:.01em;
+}
+.topbar .sub{
+  font-family:var(--font-mono);font-size:12px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.scorebox{
+  font-family:var(--font-mono);font-size:13px;color:var(--muted);
+  background:var(--panel);border:1px solid var(--line);border-radius:6px;
+  padding:8px 14px;text-align:right;min-width:140px;
+}
+.scorebox .n{font-size:20px;color:var(--amber);font-weight:600;}
+
+/* case card */
+.case{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin-bottom:22px;
+  overflow:hidden;
+}
+.case-head{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 18px;
+  border-bottom:1px solid var(--line);
+  background:var(--panel-2);
+}
+.case-tag{
+  font-family:var(--font-mono);font-size:11px;color:var(--bg);
+  background:var(--amber);border-radius:4px;padding:3px 8px;
+  font-weight:600;letter-spacing:.04em;
+}
+.case-title{font-family:var(--font-display);font-weight:600;font-size:15px;}
+.case-body{padding:18px;}
+.case-desc{color:var(--muted);font-size:13.5px;line-height:1.5;margin-bottom:14px;}
+
+/* log block */
+.logblock{
+  background:#0d1013;border:1px solid var(--line);border-radius:6px;
+  font-family:var(--font-mono);font-size:12.5px;color:#9fb3c4;
+  padding:12px 14px;margin-bottom:16px;overflow-x:auto;line-height:1.7;
+  white-space:pre;
+}
+
+/* diagram */
+.diagram{
+  display:flex;align-items:center;justify-content:center;gap:0;
+  background:#0d1013;border:1px solid var(--line);border-radius:6px;
+  padding:22px 10px;margin-bottom:18px;font-family:var(--font-mono);font-size:12px;
+  flex-wrap:wrap;
+}
+.node{
+  border:1px solid var(--line);background:var(--panel-2);border-radius:6px;
+  padding:10px 14px;text-align:center;color:var(--ink);min-width:90px;
+}
+.node.small{font-size:11px;color:var(--muted);}
+.arrow{color:var(--muted);padding:0 10px;font-size:16px;}
+
+/* field rows */
+.field-row{
+  display:grid;grid-template-columns:auto 1fr auto 1fr auto 1fr;
+  gap:8px;align-items:center;margin-bottom:10px;font-family:var(--font-mono);font-size:12.5px;
+}
+.field-row.compact{grid-template-columns:1fr;}
+.field-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+
+select{
+  background:var(--panel-2);color:var(--ink);border:1px solid var(--line);
+  border-radius:5px;padding:8px 10px;font-family:var(--font-mono);font-size:12.5px;
+  width:100%;cursor:pointer;
+}
+select:focus{outline:2px solid var(--amber);outline-offset:1px;}
+
+.rule-line{
+  display:grid;grid-template-columns:1fr 1fr 90px 100px;gap:8px;
+  margin-bottom:8px;align-items:center;
+}
+.rule-num{
+  font-family:var(--font-mono);color:var(--muted);font-size:11px;
+}
+
+/* drag/drop matching */
+.match-wrap{display:flex;gap:22px;flex-wrap:wrap;}
+.pool{
+  flex:1 1 200px;display:flex;flex-direction:column;gap:8px;
+}
+.pool-item{
+  background:var(--panel-2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;font-size:13px;cursor:grab;user-select:none;
+}
+.pool-item.dragging{opacity:.35;}
+.buckets{flex:2 1 320px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.bucket{
+  border:1.5px dashed var(--line);border-radius:8px;min-height:76px;
+  padding:8px;background:#0d1013;
+}
+.bucket-label{
+  font-family:var(--font-mono);font-size:11px;color:var(--cyan);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;
+}
+.bucket.over{border-color:var(--amber);}
+.bucket .pool-item{cursor:grab;margin-bottom:6px;}
+
+/* actions */
+.actions{display:flex;gap:10px;margin-top:14px;align-items:center;}
+button.check{
+  background:var(--amber);color:#1a1207;border:none;border-radius:6px;
+  padding:9px 18px;font-family:var(--font-mono);font-weight:600;font-size:12.5px;
+  cursor:pointer;letter-spacing:.03em;
+}
+button.check:hover{filter:brightness(1.08);}
+button.check:disabled{background:var(--line);color:var(--muted);cursor:not-allowed;}
+button.reset{
+  background:transparent;color:var(--muted);border:1px solid var(--line);
+  border-radius:6px;padding:9px 14px;font-family:var(--font-mono);font-size:12px;cursor:pointer;
+}
+
+/* feedback */
+.feedback{
+  margin-top:14px;border-radius:7px;padding:13px 15px;font-size:13px;line-height:1.55;
+  display:none;
+}
+.feedback.show{display:block;}
+.feedback.ok{background:var(--ok-dim);border:1px solid #2f5c40;color:#bfe8ce;}
+.feedback.bad{background:var(--danger-dim);border:1px solid #6b3630;color:#f2c2bd;}
+.feedback .verdict{
+  font-family:var(--font-mono);font-weight:600;font-size:11.5px;
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;display:block;
+}
+.feedback.ok .verdict{color:var(--ok);}
+.feedback.bad .verdict{color:var(--danger);}
+
+/* footer summary */
+.summary{
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:22px;text-align:center;margin-top:10px;
+}
+.summary h2{font-family:var(--font-display);font-size:19px;margin:0 0 8px;}
+.summary .pct{font-family:var(--font-mono);font-size:34px;color:var(--amber);font-weight:700;margin:6px 0;}
+.summary p{color:var(--muted);font-size:13px;margin:0 0 14px;}
+
+@media(max-width:640px){
+  .field-row{grid-template-columns:1fr;}
+  .rule-line{grid-template-columns:1fr 1fr;}
+  .match-wrap{flex-direction:column;}
+  .buckets{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div>
+      <h1>PBQ Trainer — SY0-701</h1>
+      <div class="sub">Performance-Based Questions · Dropdown / Drag &amp; Drop Simulations</div>
+    </div>
+    <div class="scorebox">SCORE<br><span class="n" id="scoreDisplay">0 / 24</span></div>
+  </div>
+
+  <!-- CASE 1 : LOG ANALYSIS -->
+  <div class="case" id="case1">
+    <div class="case-head"><span class="case-tag">CASE 01</span><span class="case-title">SSH Log Analysis</span></div>
+    <div class="case-body">
+      <div class="case-desc">You are a SOC analyst. An Internet-exposed Linux server generates the following log excerpt. Identify the attack type and select the highest priority mitigation.</div>
+      <div class="logblock">Jul 03 09:14:02 srv01 sshd[2201]: Failed password for admin from 185.220.101.4 port 51223
+Jul 03 09:14:03 srv01 sshd[2201]: Failed password for admin from 185.220.101.4 port 51224
+Jul 03 09:14:04 srv01 sshd[2201]: Failed password for root from 185.220.101.4 port 51225
+Jul 03 09:14:05 srv01 sshd[2201]: Failed password for administrator from 185.220.101.4 port 51226
+Jul 03 09:14:06 srv01 sshd[2201]: Failed password for admin from 185.220.101.4 port 51227
+Jul 03 09:14:07 srv01 sshd[2201]: Accepted password for admin from 185.220.101.4 port 51228</div>
+
+      <div class="field-row">
+        <span class="field-label">Attack Type</span>
+        <select id="c1_attack">
+          <option value="">— select —</option>
+          <option value="brute">Brute-force / password spraying</option>
+          <option value="dos">Denial of Service (DoS)</option>
+          <option value="mitm">Man-in-the-Middle (MitM)</option>
+          <option value="sqli">SQL Injection (SQLi)</option>
+        </select>
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Priority Mitigation</span>
+        <select id="c1_mitig">
+          <option value="">— select —</option>
+          <option value="lockout">Account lockout policy + automated IP banning (fail2ban/IPS)</option>
+          <option value="patch">Patch the server operating system kernel</option>
+          <option value="waf">Deploy a Web Application Firewall (WAF) in front of SSH</option>
+          <option value="antivirus">Install host-based antivirus on the server</option>
+        </select>
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="actions">
+        <button class="check" onclick="checkCase1()">Check</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+  </div>
+
+  <!-- CASE 2 : ACL BUILDER -->
+  <div class="case" id="case2">
+    <div class="case-head"><span class="case-tag">CASE 02</span><span class="case-title">Network Segmentation — ACL Rules</span></div>
+    <div class="case-body">
+      <div class="case-desc">Design Requirements: Internet clients must only reach the public web server via HTTPS (TCP 443). The internal LAN must never be accessible from the Internet or from the DMZ.</div>
+
+      <div class="diagram">
+        <div class="node">Internet</div>
+        <div class="arrow">→</div>
+        <div class="node small">Firewall</div>
+        <div class="arrow">→</div>
+        <div class="node">DMZ<br>10.0.1.10</div>
+        <div class="arrow">···</div>
+        <div class="node">Internal LAN<br>10.0.2.0/24</div>
+      </div>
+
+      <div class="rule-line">
+        <span class="rule-num">Rule 1</span>
+        <select id="c2_r1_flow">
+          <option value="">source → destination</option>
+          <option value="in-dmz">Internet → DMZ (443)</option>
+          <option value="dmz-lan">DMZ → LAN</option>
+          <option value="in-lan">Internet → LAN</option>
+        </select>
+        <select id="c2_r1_action">
+          <option value="">action</option>
+          <option value="allow">ALLOW</option>
+          <option value="deny">DENY</option>
+        </select>
+        <span></span>
+      </div>
+      <div class="rule-line">
+        <span class="rule-num">Rule 2</span>
+        <select id="c2_r2_flow">
+          <option value="">source → destination</option>
+          <option value="in-dmz">Internet → DMZ (443)</option>
+          <option value="dmz-lan">DMZ → LAN</option>
+          <option value="in-lan">Internet → LAN</option>
+        </select>
+        <select id="c2_r2_action">
+          <option value="">action</option>
+          <option value="allow">ALLOW</option>
+          <option value="deny">DENY</option>
+        </select>
+        <span></span>
+      </div>
+      <div class="rule-line">
+        <span class="rule-num">Rule 3</span>
+        <select id="c2_r3_flow">
+          <option value="">source → destination</option>
+          <option value="in-dmz">Internet → DMZ (443)</option>
+          <option value="dmz-lan">DMZ → LAN</option>
+          <option value="in-lan">Internet → LAN</option>
+        </select>
+        <select id="c2_r3_action">
+          <option value="">action</option>
+          <option value="allow">ALLOW</option>
+          <option value="deny">DENY</option>
+        </select>
+        <span></span>
+      </div>
+
+      <div class="actions">
+        <button class="check" onclick="checkCase2()">Check</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+  </div>
+
+  <!-- CASE 3 : DRAG & DROP CLASSIFICATION -->
+  <div class="case" id="case3">
+    <div class="case-head"><span class="case-tag">CASE 03</span><span class="case-title">Security Control Classification</span></div>
+    <div class="case-body">
+      <div class="case-desc">Drag and drop each security control into its proper category: Preventive, Detective, Corrective, or Deterrent.</div>
+
+      <div class="match-wrap">
+        <div class="pool" id="pool">
+          <div class="pool-item" draggable="true" data-answer="deterrent">Visible security camera</div>
+          <div class="pool-item" draggable="true" data-answer="detective">IDS (Intrusion Detection System)</div>
+          <div class="pool-item" draggable="true" data-answer="preventive">Firewall blocking traffic</div>
+          <div class="pool-item" draggable="true" data-answer="corrective">Disaster recovery plan</div>
+        </div>
+        <div class="buckets">
+          <div class="bucket" data-cat="preventive"><div class="bucket-label">Preventive</div></div>
+          <div class="bucket" data-cat="detective"><div class="bucket-label">Detective</div></div>
+          <div class="bucket" data-cat="corrective"><div class="bucket-label">Corrective</div></div>
+          <div class="bucket" data-cat="deterrent"><div class="bucket-label">Deterrent</div></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="check" onclick="checkCase3()">Check</button>
+        <button class="reset" onclick="resetCase3()">Reset</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+  </div>
+
+  <!-- CASE 4 : CVSS / SCENARIO -->
+  <div class="case" id="case4">
+    <div class="case-head"><span class="case-tag">CASE 04</span><span class="case-title">Scenario — Patch Prioritization</span></div>
+    <div class="case-body">
+      <div class="case-desc">A vulnerability assessment identifies 3 findings on an Internet-facing production environment. Prioritize them for remediation (1 = highest priority / remediate first).</div>
+
+      <div class="field-row compact">
+        <span class="field-label">CVSS 9.8 — Unauthenticated Remote Code Execution (RCE) on publicly exposed web service</span>
+        <select id="c4_a"><option value="">priority</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+      </div>
+      <div class="field-row compact">
+        <span class="field-label">CVSS 6.1 — Reflected Cross-Site Scripting (XSS) requiring user interaction on low-traffic page</span>
+        <select id="c4_b"><option value="">priority</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+      </div>
+      <div class="field-row compact">
+        <span class="field-label">CVSS 7.5 — Denial of Service (DoS) flaw on an internal service not exposed to Internet</span>
+        <select id="c4_c"><option value="">priority</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+      </div>
+
+      <div class="actions">
+        <button class="check" onclick="checkCase4()">Check</button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+  </div>
+
+  <div id="dynamicCases"></div>
+
+  <div class="summary" id="summaryBox" style="display:none;">
+    <h2>Session Results</h2>
+    <div class="pct" id="finalPct">0%</div>
+    <p id="finalMsg"></p>
+    <button class="check" onclick="location.reload()">Restart</button>
+  </div>
+
+</div>
+
+<script>
+let score = 0;
+let solved = {1:false,2:false,3:false,4:false};
+const TOTAL_CASES = 24;
+
+function updateScore(){
+  document.getElementById('scoreDisplay').textContent = score + ' / ' + TOTAL_CASES;
+  if(Object.keys(solved).length===TOTAL_CASES && Object.values(solved).every(v=>v)){
+    const box = document.getElementById('summaryBox');
+    box.style.display='block';
+    const pct = Math.round(score/TOTAL_CASES*100);
+    document.getElementById('finalPct').textContent = pct + '%';
+    let msg;
+    if(pct>=90) msg = "Outstanding — you have mastered the analytical security reasoning behind PBQs. You are well-prepared for this format on the exam.";
+    else if(pct>=50) msg = "Solid performance, but review the cases you missed — re-read the explanations and associated architectural principles before exam day.";
+    else msg = "These PBQs test security reasoning rather than simple rote memorization. Carefully review all explanations and remediation rationale before proceeding.";
+    document.getElementById('finalMsg').textContent = msg;
+    box.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+function markSolved(caseId, isCorrect){
+  if(!solved[caseId]){
+    solved[caseId]=true;
+    if(isCorrect) score++;
+    updateScore();
+  }
+}
+
+function showFeedback(id, ok, verdictText, bodyHtml){
+  const el = document.getElementById(id);
+  el.className = 'feedback show ' + (ok?'ok':'bad');
+  el.innerHTML = '<span class="verdict">'+verdictText+'</span>' + bodyHtml;
+}
+
+/* CASE 1 */
+function checkCase1(){
+  const attack = document.getElementById('c1_attack').value;
+  const mitig = document.getElementById('c1_mitig').value;
+  const ok = (attack==='brute' && mitig==='lockout');
+  showFeedback('fb1', ok, ok?'Correct':'Incorrect',
+    "<b>Attack:</b> Brute-force / password spraying — rapid pace (1 attempt/sec) + cycling through generic usernames indicates an automated script.<br>"+
+    "<b>Mitigation:</b> Account lockout policy + automatic IP banning (fail2ban/IPS). Additionally: enforce SSH key-based authentication with MFA, and do not expose management ports directly to the public Internet.");
+  markSolved(1, ok);
+}
+
+/* CASE 2 */
+function checkCase2(){
+  const rules = [
+    [document.getElementById('c2_r1_flow').value, document.getElementById('c2_r1_action').value],
+    [document.getElementById('c2_r2_flow').value, document.getElementById('c2_r2_action').value],
+    [document.getElementById('c2_r3_flow').value, document.getElementById('c2_r3_action').value],
+  ];
+  const has = (flow, action) => rules.some(r => r[0]===flow && r[1]===action);
+  const ok = has('in-dmz','allow') && has('dmz-lan','deny') && has('in-lan','deny');
+  showFeedback('fb2', ok, ok?'Correct':'Incorrect',
+    "<b>Expected Rules:</b><br>Internet → DMZ (443): ALLOW<br>DMZ → LAN: DENY (prevents lateral movement if the DMZ host is compromised)<br>Internet → LAN: DENY.<br>"+
+    "Key principle tested: <b>Network Segmentation</b> — even in the event of a compromised web application server in the DMZ, it must never be permitted to pivot into the internal corporate network.");
+  markSolved(2, ok);
+}
+
+/* CASE 3 — drag & drop */
+const correctMap = {
+  'Visible security camera':'deterrent',
+  'IDS (Intrusion Detection System)':'detective',
+  'Firewall blocking traffic':'preventive',
+  'Disaster recovery plan':'corrective'
+};
+
+document.querySelectorAll('.pool-item').forEach(item=>{
+  item.addEventListener('dragstart', e=>{
+    e.dataTransfer.setData('text/plain', item.textContent);
+    item.classList.add('dragging');
+  });
+  item.addEventListener('dragend', ()=> item.classList.remove('dragging'));
+});
+
+document.querySelectorAll('.bucket, #pool').forEach(zone=>{
+  zone.addEventListener('dragover', e=>{
+    e.preventDefault();
+    if(zone.classList.contains('bucket')) zone.classList.add('over');
+  });
+  zone.addEventListener('dragleave', ()=> zone.classList.remove('over'));
+  zone.addEventListener('drop', e=>{
+    e.preventDefault();
+    zone.classList.remove('over');
+    const dragging = document.querySelector('.pool-item.dragging');
+    if(dragging) zone.appendChild(dragging);
+  });
+});
+
+function checkCase3(){
+  let allCorrect = true;
+  document.querySelectorAll('.bucket').forEach(bucket=>{
+    const cat = bucket.dataset.cat;
+    bucket.querySelectorAll('.pool-item').forEach(item=>{
+      if(correctMap[item.textContent.trim()] !== cat) allCorrect = false;
+    });
+  });
+  const placed = document.querySelectorAll('.bucket .pool-item').length;
+  if(placed < 4){ allCorrect = false; }
+  showFeedback('fb3', allCorrect, allCorrect?'Correct':'Incorrect',
+    "<b>Visible camera</b> → Deterrent (discourages adversaries from initiating attacks without actively detecting or blocking)<br>"+
+    "<b>IDS</b> → Detective (detects and alerts on anomalies, but does not block traffic inline — unlike an IPS)<br>"+
+    "<b>Firewall</b> → Preventive (actively blocks unauthorized traffic before access can occur)<br>"+
+    "<b>Disaster recovery plan</b> → Corrective (acts after an incident occurs to restore systems to normal operational state)");
+  markSolved(3, allCorrect);
+}
+function resetCase3(){
+  const pool = document.getElementById('pool');
+  document.querySelectorAll('.bucket .pool-item').forEach(item=> pool.appendChild(item));
+  document.getElementById('fb3').className='feedback';
+}
+
+/* CASE 4 */
+function checkCase4(){
+  const a = document.getElementById('c4_a').value; // RCE 9.8 -> 1
+  const b = document.getElementById('c4_b').value; // XSS 6.1 -> 3
+  const c = document.getElementById('c4_c').value; // DoS interne 7.5 -> 2
+  const ok = (a==='1' && b==='3' && c==='2');
+  showFeedback('fb4', ok, ok?'Correct':'Incorrect',
+    "<b>Expected Order:</b> 1) Unauthenticated Internet-facing RCE (CVSS 9.8 + remote exploitability + external exposure = critical priority) → "+
+    "2) Internal DoS (CVSS 7.5, but reduced attack surface because it is not exposed to Internet) → "+
+    "3) Reflected XSS (CVSS 6.1, requires user interaction + low page traffic = lowest priority).<br>"+
+    "<b>Core Takeaway:</b> The CVSS base score alone is insufficient — network exposure and real-world business context dictate operational patching priorities.");
+  markSolved(4, ok);
+}
+
+/* ===================== CASES 5–24 (data-driven) ===================== */
+const CASE_DATA = [
+{tag:'CASE 05', title:"Vishing — Social Engineering", desc:"An employee receives a phone call from an individual claiming to be from corporate IT support, requesting confirmation of their domain password to \"resolve an urgent ticket.\"",
+ fields:[
+   {id:'a', label:"Attack Type", options:[['','— select —'],['vishing','Vishing (Voice social engineering)'],['phishing','Phishing (Email)'],['smishing','Smishing (SMS)'],['tailgating','Tailgating']], correct:'vishing'},
+   {id:'b', label:'Priority Control', options:[['','— select —'],['policy','Policy: never share passwords by phone + mandatory callback verification via official number'],['antivirus','Install host-based antivirus'],['firewall','Configure an edge firewall rule'],['patch','Patch the employee workstation OS']], correct:'policy'}
+ ],
+ explanation:"Vishing exploits voice telephone communication to deceive targets. Technical security controls cannot stop voice manipulation — effective mitigation requires employee security awareness training and strict organizational policy: IT support never asks for user passwords, and employees must independently verify suspicious callers using official corporate directories."},
+
+{tag:'CASE 06', title:'PKI — Confidentiality vs. Authenticity', desc:"Alice wants to transmit an encrypted confidential message to Bob so that exclusively Bob is capable of reading its contents.",
+ fields:[
+   {id:'a', label:'Key Used for Encryption', options:[['','— select —'],['bob-pub',"Bob's public key"],['bob-priv',"Bob's private key"],['alice-priv',"Alice's private key"],['alice-pub',"Alice's public key"]], correct:'bob-pub'}
+ ],
+ explanation:"For data confidentiality, data is encrypted using the recipient's PUBLIC key (Bob's public key); only Bob, possessing the corresponding private key, can decrypt it. Conversely, encrypting with Alice's private key generates a digital signature that proves authenticity and non-repudiation, not confidentiality — a standard CompTIA Security+ exam distinction."},
+
+{tag:'CASE 07', title:'Authentication Factors', desc:"A remote worker logs in using a domain username and password, then must approve a push notification prompt sent to their registered smartphone.",
+ fields:[
+   {id:'a', label:'First Factor', options:[['','— select —'],['know','Something you know'],['have','Something you have'],['are','Something you are']], correct:'know'},
+   {id:'b', label:'Second Factor', options:[['','— select —'],['know','Something you know'],['have','Something you have'],['are','Something you are']], correct:'have'},
+   {id:'c', label:'Overall Mechanism', options:[['','— select —'],['mfa','MFA (two distinct factor categories)'],['2sv','2-Step Verification with the same factor category repeated'],['sso','SSO (Single Sign-On)']], correct:'mfa'}
+ ],
+ explanation:"Password = something you know. Push notification approval on an enrolled mobile device = something you have. Combining two distinct factor categories satisfies true Multifactor Authentication (MFA). If both steps utilized the same category (e.g., password + secret security question), it would be 2-step verification, not true MFA."},
+
+{tag:'CASE 08', title:'Password Storage Architecture', desc:"You are architecting the credential database and authentication backend for a new web portal.",
+ fields:[
+   {id:'a', label:'Recommended Storage Mechanism', options:[['','— select —'],['hash-salt','Salted Hash with key stretching (bcrypt / argon2 / PBKDF2)'],['encrypt','Reversible symmetric encryption'],['plain','Plaintext storage'],['encode','Base64 encoding']], correct:'hash-salt'}
+ ],
+ explanation:"User passwords must always be processed with a one-way cryptographic hash combined with a cryptographically secure, unique salt per user — never encrypted (which is reversible with a key) and never encoded (Base64 is trivial obfuscation). Adaptive key-stretching functions like bcrypt and argon2 add computational difficulty to resist offline GPU brute-force attacks."},
+
+{tag:'CASE 09', title:'Unauthorized Production Change', desc:"A system administrator pushes a direct firewall rule modification to the production cluster on a Friday evening without submitting a change request.",
+ fields:[
+   {id:'a', label:'Omitted Change Management Step', options:[['','— select —'],['cab','Formal review and authorization by the Change Advisory Board (CAB)'],['backup','Server image backup'],['antivirus','Antivirus definitions scan'],['training','End-user awareness training']], correct:'cab'},
+   {id:'b', label:'Primary Risk Introduced', options:[['','— select —'],['no-rollback','Absence of an approved backout/rollback plan and validated maintenance window'],['malware','Immediate malware infection'],['dos','External distributed denial of service']], correct:'no-rollback'}
+ ],
+ explanation:"The structured change management framework (Request for Change → Impact Analysis → CAB Approval → Maintenance Window Scheduling → Documented Backout Plan) exists specifically to prevent unreviewed, uncoordinated operational modifications that can trigger prolonged service outages."},
+
+{tag:'CASE 10', title:'DLP — Data Exfiltration Prevention', desc:"An internal user attempts to transmit an outbound email to an external personal recipient with an attached spreadsheet containing client Social Security Numbers (SSNs).",
+ fields:[
+   {id:'a', label:'Appropriate DLP Action', options:[['','— select —'],['block','Block transmission in real time and generate a high-severity alert for SOC review'],['log','Silently record the transaction in log files without blocking'],['allow','Permit transmission assuming possible legitimate business justification'],['delete','Immediately delete the user account']], correct:'block'},
+   {id:'b', label:'Detection Technique Used by DLP', options:[['','— select —'],['pattern','Pattern matching / Regular Expression (regex validating standard SSN syntax)'],['signature','Antivirus file hash signature'],['heuristic','Network flow behavioral heuristics']], correct:'pattern'}
+ ],
+ explanation:"Data Loss Prevention (DLP) engines inspect in-transit data using regular expressions and mathematical checks (such as Luhn algorithm for credit card PANs or regex for SSNs). When sensitive regulated data is detected heading to an external unapproved boundary, the engine blocks exfiltration and alerts security personnel."},
+
+{tag:'CASE 11', title:'DNS Filtering — DGA Detection', desc:'A network DNS filter triggers alerts for hundreds of outbound lookup requests for pseudo-random domain names such as <span style="font-family:monospace;color:#e8a33d">xj4k9qz2p.net</span> originating from an internal host.',
+ fields:[
+   {id:'a', label:'Detection Methodology', options:[['','— select —'],['entropy','Shannon entropy analysis (statistical randomness of domain strings)'],['blocklist','Static threat intelligence reputation blocklist'],['signature','Host-based endpoint file signature']], correct:'entropy'},
+   {id:'b', label:'Probable Underlying Threat', options:[['','— select —'],['c2','Malware utilizing a Domain Generation Algorithm (DGA) attempting to locate its C2 server'],['update','Legitimate automated operating system update'],['dns-cache','Local client DNS resolver cache corruption']], correct:'c2'}
+ ],
+ explanation:"Malware authors use Domain Generation Algorithms (DGAs) to generate hundreds of pseudo-random domain names daily to evade static domain blocklists. These algorithmically generated domains exhibit high mathematical entropy (high character randomness). DNS security solutions leverage entropy analysis to flag and block new C2 rendezvous attempts dynamically."},
+
+{tag:'CASE 12', title:'Backup Strategy & RTO Optimization', desc:"An organization executes a full system backup every Sunday at midnight. Leadership requires minimizing restoration duration (low RTO) in the event of an outage on Thursday afternoon, accepting higher storage utilization.",
+ fields:[
+   {id:'a', label:'Recommended Strategy', options:[['','— select —'],['differential','Differential (cumulative backup of all changes since the last Sunday full backup)'],['incremental','Incremental (backup containing only changes made since the previous day)'],['none','No intermediate backups required']], correct:'differential'}
+ ],
+ explanation:"A differential backup captures all data modified since the previous full backup. Restoring requires only 2 steps: the Full backup plus the most recent Differential backup, resulting in a fast Recovery Time Objective (RTO). An incremental strategy saves backup media space but requires restoring the full backup plus every single sequential daily incremental backup, lengthening recovery time."},
+
+{tag:'CASE 13', title:'Disaster Recovery Site Selection', desc:"A business must be capable of restoring critical services within 4 hours following a catastrophic outage at its primary datacenter. The organization operates under moderate budget constraints and does not require instantaneous automated failover.",
+ fields:[
+   {id:'a', label:'Optimal Site Selection', options:[['','— select —'],['warm','Warm site (partially equipped infrastructure, operational upon backup restoration)'],['hot','Hot site (fully redundant hardware with synchronous real-time data mirroring, highest cost)'],['cold','Cold site (empty facility with power/cooling, systems built from scratch, longest RTO)']], correct:'warm'}
+ ],
+ explanation:"A Hot site offers near-zero RTO through live synchronous mirroring, but is cost-prohibitive. A Cold site is economical but requires days or weeks to purchase and deploy hardware. A Warm site provides the intended balance: pre-installed server hardware, power, and networking ready to restore recent backups within a 4-hour recovery window."},
+
+{tag:'CASE 14', title:'Zero Trust Architecture', desc:"An enterprise transitions its infrastructure to a Zero Trust Architecture (ZTA). An authenticated user on an internal corporate subnet attempts to query a sensitive financial database.",
+ fields:[
+   {id:'a', label:'Core Architectural Principle', options:[['','— select —'],['verify-always','Explicitly verify every transaction dynamically; never grant implicit trust based on network topology'],['perimeter','Grant access automatically because the endpoint resides within the internal physical perimeter'],['vpn-only','Trust is permanently established once the initial secure VPN tunnel connects']], correct:'verify-always'}
+ ],
+ explanation:"The foundational principle of Zero Trust Architecture (NIST SP 800-207) is 'Never Trust, Always Verify.' Physical or logical presence inside an internal network boundary does not confer implicit access privileges. Every resource request must be dynamically authenticated, authorized, and continuously monitored at the Policy Enforcement Point (PEP)."},
+
+{tag:'CASE 15', title:'IoT Device Network Segmentation', desc:"An enterprise deployment introduces 50 smart IP surveillance cameras across multiple company buildings.",
+ fields:[
+   {id:'a', label:'Recommended Security Architecture', options:[['','— select —'],['vlan-acl','Dedicated IoT VLAN with restrictive ACLs restricting traffic exclusively to the Video Management Server'],['same-lan','Connect all cameras directly to the primary workstation corporate LAN for simplicity'],['direct-internet','Assign public routable IP addresses directly to each camera']], correct:'vlan-acl'}
+ ],
+ explanation:"IoT firmware frequently contains unpatched vulnerabilities. Isolating IP cameras within a dedicated VLAN enforced by strict Access Control Lists (ACLs) permits traffic only to authorized recording/management servers. This prevents an adversary who compromises an IoT device from pivoting laterally into corporate subnets."},
+
+{tag:'CASE 16', title:'Wireless Security Protocols', desc:"A network audit discovers an auxiliary guest wireless access point configured with legacy WEP encryption. Security engineering mandates an immediate modernization.",
+ fields:[
+   {id:'a', label:'Recommended Wireless Protocol', options:[['','— select —'],['wpa3','WPA3 (Personal with SAE or Enterprise)'],['wpa','WPA (Original TKIP)'],['wep2','Enhanced WEP2'],['open','Open unencrypted network']], correct:'wpa3'}
+ ],
+ explanation:"WEP is fundamentally broken due to weak RC4 key scheduling and 24-bit IV reuse, permitting decryption in minutes. WPA3 is the current secure standard. It replaces the pre-shared key four-way handshake with Simultaneous Authentication of Equals (SAE), preventing offline dictionary attacks and providing forward secrecy."},
+
+{tag:'CASE 17', title:'Datacenter Tailgating & Physical Security', desc:"An employee courteously holds a secured datacenter entrance door open for an unfamiliar visitor carrying delivery cartons without verifying their access badge.",
+ fields:[
+   {id:'a', label:'Physical Attack Category', options:[['','— select —'],['tailgating','Tailgating / Piggybacking'],['dumpster','Dumpster diving'],['shoulder','Shoulder surfing']], correct:'tailgating'},
+   {id:'b', label:'Most Effective Physical Control', options:[['','— select —'],['mantrap','Access control vestibule (mantrap) enforcing one badge authorization per single passage'],['camera','Standalone security surveillance camera'],['sign','Restricted Personnel Only door signage']], correct:'mantrap'}
+ ],
+ explanation:"Tailgating exploits social courtesy and willingness to help. While security cameras only provide forensic evidence after an event, an access control vestibule (mantrap) with interlocking doors physically restricts passage to one authenticated badgeholder at a time, preventing unauthorized entry."},
+
+{tag:'CASE 18', title:'Vulnerability Assessment Methodologies', desc:"A security operations team requires a vulnerability scan that accurately evaluates local host misconfigurations, file permissions, and missing software updates with administrative rights while minimizing false positives.",
+ fields:[
+   {id:'a', label:'Appropriate Scan Mode', options:[['','— select —'],['credentialed','Credentialed (Authenticated) vulnerability scan'],['uncredentialed','Uncredentialed (Unauthenticated) vulnerability scan'],['passive','Passive network sniffer capture']], correct:'credentialed'}
+ ],
+ explanation:"A credentialed vulnerability scan logs into the target endpoint using administrative credentials to inspect file systems, registry keys, patch levels, and installed software internally, producing highly accurate findings with minimal false positives. Uncredentialed scans only probe externally accessible listening ports."},
+
+{tag:'CASE 19', title:'Lateral Movement Detection & SIEM', desc:"A SOC team investigates suspected adversary lateral movement across multiple internal Windows workstations.",
+ fields:[
+   {id:'a', label:'Primary Log Telemetry Source', options:[['','— select —'],['4624-4625','Windows Security Event Logs (Event IDs 4624/4625) correlated across distributed hosts'],['dns-only','External recursive DNS query logs only'],['print','Print server spooler logs']], correct:'4624-4625'},
+   {id:'b', label:'Central Correlation Platform', options:[['','— select —'],['siem','SIEM (real-time multi-source log aggregation and correlation engine)'],['antivirus','Isolated endpoint antivirus management console'],['ticketing','IT service desk ticketing platform']], correct:'siem'}
+ ],
+ explanation:"Adversary lateral movement (e.g., via Pass-the-Hash or remote Kerberos ticket reuse) is identified by correlating successful (Event ID 4624) and failed (Event ID 4625) logon events across multiple workstations within short time intervals. A SIEM aggregates and correlates these multi-host telemetry sources in real-time."},
+
+{tag:'CASE 20', title:'Risk Management Strategies', desc:"An organization identifies a critical vulnerability in a legacy SCADA controller that cannot be patched due to vendor application obsolescence. The engineering team isolates the controller onto a segmented, air-gapped subnet.",
+ fields:[
+   {id:'a', label:'Applied Risk Treatment Option', options:[['','— select —'],['mitigate','Risk Mitigation (reducing exposure via compensatory isolation without removing the underlying flaw)'],['avoid','Risk Avoidance (completely decommissioning the industrial process)'],['transfer','Risk Transference (procuring a cyber insurance warranty)'],['accept','Pure Risk Acceptance (taking zero protective measures)']], correct:'mitigate'}
+ ],
+ explanation:"Isolating the vulnerable controller inside a restricted subnet reduces its exposure and attack likelihood without fixing the unpatchable flaw. This is Risk Mitigation (implementing compensating security controls), not Risk Avoidance (which requires stopping the operation) or pure Acceptance."},
+
+{tag:'CASE 21', title:'NIST Incident Response Lifecycle Phases', desc:"Chronologically arrange the standard phases of the NIST SP 800-61 incident response lifecycle (1 = initial phase).",
+ fields:[
+   {id:'a', label:'Containment, Eradication & Recovery', options:[['','order'],['1','1'],['2','2'],['3','3'],['4','4']], correct:'3'},
+   {id:'b', label:'Preparation', options:[['','order'],['1','1'],['2','2'],['3','3'],['4','4']], correct:'1'},
+   {id:'c', label:'Detection & Analysis', options:[['','order'],['1','1'],['2','2'],['3','3'],['4','4']], correct:'2'},
+   {id:'d', label:'Post-Incident Activity (Lessons Learned)', options:[['','order'],['1','1'],['2','2'],['3','3'],['4','4']], correct:'4'}
+ ],
+ explanation:"The standard NIST SP 800-61 Rev. 2 incident handling lifecycle comprises four chronological phases: (1) Preparation (tools, team training, policies); (2) Detection & Analysis (identifying, verifying, and triaging indicators of compromise); (3) Containment, Eradication & Recovery (limiting impact, eliminating root causes, restoring operations); and (4) Post-Incident Activity (conducting post-mortem lessons learned to update baselines)."},
+
+{tag:'CASE 22', title:'Cloud Shared Responsibility Model — IaaS', desc:"An organization hosts a virtual machine workload on an Infrastructure as a Service (IaaS) cloud provider (e.g., AWS EC2, Azure VM). A zero-day remote vulnerability is publicly disclosed affecting the guest operating system kernel.",
+ fields:[
+   {id:'a', label:'Party Responsible for Guest OS Patching', options:[['','— select —'],['customer','The Customer (Tenant Organization)'],['provider','The Cloud Service Provider (CSP)'],['shared-equal','Equal 50/50 shared liability']], correct:'customer'}
+ ],
+ explanation:"In an IaaS cloud model, the Cloud Service Provider (CSP) is responsible for the 'security OF the cloud' (physical facilities, hardware, networking, and the underlying hypervisor). The customer is strictly responsible for 'security IN the cloud' (guest operating system, installed applications, configuration baselines, network ACLs, and customer data)."},
+
+{tag:'CASE 23', title:'Symmetric vs. Asymmetric Cryptography', desc:"An enterprise database application must encrypt massive volumes of confidential records at rest (several gigabytes) with maximum computational efficiency and minimal latency.",
+ fields:[
+   {id:'a', label:'Cryptographic Mechanism to Employ', options:[['','— select —'],['symmetric','Symmetric Encryption (e.g., AES-256)'],['asymmetric','Asymmetric Encryption (e.g., RSA-4096)'],['hash','Cryptographic Hashing (e.g., SHA-256)']], correct:'symmetric'}
+ ],
+ explanation:"Symmetric key cryptography (such as AES) utilizes a single shared key and CPU hardware-accelerated instructions, making it exceptionally fast and optimized for bulk data encryption. Asymmetric cryptography (such as RSA or ECC) involves complex mathematical operations and is reserved for digital signatures and secure key exchange, not bulk data storage encryption."},
+
+{tag:'CASE 24', title:'SCAP / Automated Compliance Auditing', desc:"A security operations team requires automated verification of system configuration baselines across hundreds of enterprise servers against published CIS Benchmarks, producing standardized and reproducible audit scores.",
+ fields:[
+   {id:'a', label:'Standard Protocol / Framework', options:[['','— select —'],['scap','SCAP (Security Content Automation Protocol with CIS/DISA STIG profiles)'],['nmap','Nmap port scanning alone'],['wireshark','Wireshark packet capture']], correct:'scap'}
+ ],
+ explanation:"SCAP (Security Content Automation Protocol) is a standardized suite of open specifications (including XCCDF, OVAL, and CVE) designed to automate vulnerability checking, security measurement, and policy compliance evaluation against formal baselines such as CIS Benchmarks and DISA STIGs."}
+];
+
+function renderDynamicCases(){
+  const container = document.getElementById('dynamicCases');
+  CASE_DATA.forEach((c, idx)=>{
+    const caseId = idx + 5; // starts at case 5
+    solved[caseId] = false;
+    const div = document.createElement('div');
+    div.className = 'case';
+    div.id = 'case' + caseId;
+
+    let fieldsHtml = '';
+    c.fields.forEach(f=>{
+      const options = f.options.map(o=>'<option value="'+o[0]+'">'+o[1]+'</option>').join('');
+      fieldsHtml += '<div class="field-row compact" style="margin-bottom:12px;">'
+        + '<span class="field-label">'+f.label+'</span>'
+        + '<select id="c'+caseId+'_'+f.id+'">'+options+'</select>'
+        + '</div>';
+    });
+
+    div.innerHTML =
+      '<div class="case-head"><span class="case-tag">'+c.tag+'</span><span class="case-title">'+c.title+'</span></div>'
+      + '<div class="case-body">'
+      + '<div class="case-desc">'+c.desc+'</div>'
+      + fieldsHtml
+      + '<div class="actions"><button class="check" onclick="checkDynamic('+caseId+')">Check</button></div>'
+      + '<div class="feedback" id="fb'+caseId+'"></div>'
+      + '</div>';
+    container.appendChild(div);
+  });
+}
+
+function checkDynamic(caseId){
+  const c = CASE_DATA[caseId - 5];
+  let ok = true;
+  c.fields.forEach(f=>{
+    const val = document.getElementById('c'+caseId+'_'+f.id).value;
+    if(val !== f.correct) ok = false;
+  });
+  showFeedback('fb'+caseId, ok, ok?'Correct':'Incorrect', c.explanation);
+  markSolved(caseId, ok);
+}
+
+renderDynamicCases();
+</script>
+</body>
+</html>

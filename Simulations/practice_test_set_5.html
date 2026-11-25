@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CompTIA Security+ (SY0-701) — Practice Test Simulator 5 (Fresh 90 Questions)</title>
+  <style>
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-card: #1f2937;
+      --bg-card-hover: #283548;
+      --border-color: #374151;
+      --border-focus: #6366f1;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --accent-indigo: #6366f1;
+      --accent-indigo-hover: #4f46e5;
+      --accent-green: #10b981;
+      --accent-green-bg: rgba(16, 185, 129, 0.12);
+      --accent-red: #ef4444;
+      --accent-red-bg: rgba(239, 68, 68, 0.12);
+      --accent-amber: #f59e0b;
+      --accent-amber-bg: rgba(245, 158, 11, 0.12);
+      --accent-cyan: #06b6d4;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f3f4f6;
+      --bg-secondary: #ffffff;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f9fafb;
+      --border-color: #e5e7eb;
+      --border-focus: #4f46e5;
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --text-muted: #9ca3af;
+      --accent-indigo: #4f46e5;
+      --accent-indigo-hover: #4338ca;
+      --accent-green-bg: rgba(16, 185, 129, 0.08);
+      --accent-red-bg: rgba(239, 68, 68, 0.08);
+      --accent-amber-bg: rgba(245, 158, 11, 0.08);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    /* Top Navigation Header */
+    header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-link-btn {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      transition: all 0.15s;
+    }
+    .nav-link-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-indigo);
+      background-color: var(--bg-card);
+    }
+
+    .timer-display {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-indigo);
+    }
+
+    .timer-warning {
+      color: var(--accent-amber) !important;
+      border-color: var(--accent-amber) !important;
+      animation: pulse 1.5s infinite;
+    }
+
+    .timer-danger {
+      color: var(--accent-red) !important;
+      border-color: var(--accent-red) !important;
+      animation: pulse 0.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+      user-select: none;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-indigo);
+      color: #ffffff;
+    }
+    .btn-primary:hover { background-color: var(--accent-indigo-hover); }
+
+    .btn-secondary {
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+    .btn-secondary:hover {
+      background-color: var(--bg-card-hover);
+      border-color: var(--text-muted);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-secondary);
+      border-color: var(--border-color);
+    }
+    .btn-outline:hover {
+      color: var(--text-primary);
+      border-color: var(--border-focus);
+    }
+
+    .btn-danger {
+      background-color: var(--accent-red);
+      color: #ffffff;
+    }
+    .btn-danger:hover { filter: brightness(1.1); }
+
+    .btn-icon {
+      padding: 8px;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      border: 1px solid transparent;
+    }
+    .btn-icon:hover {
+      color: var(--text-primary);
+      background-color: var(--bg-card);
+      border-color: var(--border-color);
+    }
+
+    /* Container layout */
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+      flex: 1;
+    }
+
+    /* Setup / Welcome Screen */
+    .setup-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 36px 32px;
+      max-width: 760px;
+      margin: 20px auto 40px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .setup-header {
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .setup-header h2 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .setup-header p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .banner-highlight {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: #a7f3d0;
+    }
+    [data-theme="light"] .banner-highlight {
+      color: #065f46;
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    .setup-options {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .option-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .mode-card {
+      border: 2px solid var(--border-color);
+      background-color: var(--bg-card);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mode-card:hover {
+      border-color: var(--accent-indigo);
+      background-color: var(--bg-card-hover);
+    }
+    .mode-card.active {
+      border-color: var(--accent-indigo);
+      background-color: rgba(99, 102, 241, 0.1);
+    }
+    .mode-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mode-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-indigo);
+    }
+
+    /* Exam Layout */
+    #examScreen {
+      display: none;
+    }
+
+    .exam-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .exam-layout { grid-template-columns: 1fr; }
+    }
+
+    .question-panel {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .q-meta-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .q-domain-pill {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent-indigo);
+      background: rgba(99, 102, 241, 0.12);
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .flag-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .flag-btn.flagged {
+      background: var(--accent-amber-bg);
+      border-color: var(--accent-amber);
+      color: var(--accent-amber);
+    }
+
+    .q-text {
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+
+    .choices-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .choice-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background-color: var(--bg-card);
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+      user-select: none;
+      position: relative;
+    }
+
+    .choice-item:hover {
+      background-color: var(--bg-card-hover);
+      border-color: var(--border-focus);
+    }
+
+    .choice-item.selected {
+      border-color: var(--accent-indigo);
+      background-color: rgba(99, 102, 241, 0.1);
+    }
+
+    .choice-item.eliminated {
+      opacity: 0.45;
+      text-decoration: line-through;
+    }
+
+    .choice-badge {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      flex-shrink: 0;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+
+    .choice-item.selected .choice-badge {
+      background-color: var(--accent-indigo);
+      border-color: var(--accent-indigo);
+      color: #ffffff;
+    }
+
+    .choice-content {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      flex: 1;
+      padding-top: 2px;
+    }
+
+    .eliminate-btn {
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px;
+      border-radius: 4px;
+      opacity: 0.5;
+      transition: all 0.15s;
+    }
+    .eliminate-btn:hover {
+      opacity: 1;
+      color: var(--accent-red);
+    }
+
+    /* Tutor Mode Explanation Box */
+    .tutor-box {
+      display: none;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent-cyan);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+    .tutor-box.show { display: block; }
+    .tutor-title {
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Question Footer Controls */
+    .q-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+    }
+
+    /* Sidebar Navigator */
+    .sidebar-panel {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 20px;
+      position: sticky;
+      top: 76px;
+    }
+
+    .sidebar-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .grid-filter-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .grid-filter-btn {
+      flex: 1;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 5px 4px;
+      border-radius: 6px;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      text-align: center;
+    }
+    .grid-filter-btn.active {
+      background: var(--accent-indigo);
+      color: #fff;
+      border-color: var(--accent-indigo);
+    }
+
+    .q-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .grid-item {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .grid-item:hover {
+      border-color: var(--accent-indigo);
+      background-color: var(--bg-card-hover);
+    }
+    .grid-item.current {
+      outline: 2px solid var(--accent-indigo);
+      outline-offset: 1px;
+    }
+    .grid-item.answered {
+      background-color: rgba(99, 102, 241, 0.25);
+      border-color: var(--accent-indigo);
+      color: var(--text-primary);
+    }
+    .grid-item.flagged::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent-amber);
+    }
+
+    /* Score Report / Results Screen */
+    #resultsScreen {
+      display: none;
+    }
+
+    .results-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 36px 32px;
+      max-width: 900px;
+      margin: 0 auto 40px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .results-banner {
+      text-align: center;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 28px;
+    }
+
+    .verdict-badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+    .verdict-pass {
+      background-color: var(--accent-green-bg);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .verdict-fail {
+      background-color: var(--accent-red-bg);
+      color: var(--accent-red);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .score-big {
+      font-family: var(--font-mono);
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .score-sub {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: var(--font-mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .domain-breakdown {
+      margin-bottom: 36px;
+    }
+    .domain-row {
+      margin-bottom: 14px;
+    }
+    .domain-row-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .bar-track {
+      background-color: var(--bg-card);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background-color: var(--accent-indigo);
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+
+    .review-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .review-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .review-card.correct { border-left: 4px solid var(--accent-green); }
+    .review-card.incorrect { border-left: 4px solid var(--accent-red); }
+
+    .review-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .review-q-text {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .review-choices {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .review-choice {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .review-choice.correct-choice {
+      background-color: var(--accent-green-bg);
+      border-color: var(--accent-green);
+    }
+    .review-choice.user-selected {
+      background-color: var(--accent-red-bg);
+      border-color: var(--accent-red);
+    }
+    .review-explanation {
+      background-color: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    @media print {
+      header, .header-actions, .actions-bar, .review-filter-bar, button { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+      .results-card, .review-card { box-shadow: none !important; border: 1px solid #ccc !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-title">
+      <span>CompTIA Security+ SY0-701</span>
+      <span class="brand-badge">SET 5 · ZERO OVERLAP</span>
+    </div>
+
+    <div class="header-actions">
+      <a href="jason_dion_practice_test_simulator.html" class="nav-link-btn" title="Go to Test Set 1">← Test Set 1</a>
+      <a href="pbq_trainer_security_plus.html" class="nav-link-btn" title="PBQ Hands-on Trainer">PBQ Trainer</a>
+
+      <div class="timer-display" id="timerBox" style="display:none;">
+        <span>⏱️</span>
+        <span id="timeRemaining">90:00</span>
+      </div>
+
+      <button class="btn btn-secondary btn-sm" id="pauseBtn" style="display:none;">Pause</button>
+      <button class="btn-icon" id="themeToggleBtn" title="Toggle Theme">🌓</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. SETUP SCREEN -->
+    <div id="setupScreen">
+      <div class="setup-card">
+        <div class="setup-header">
+          <h2>Practice Test 5 Simulator</h2>
+          <p>CompTIA Security+ SY0-701 Realistic Practice Examination</p>
+        </div>
+
+        <div class="banner-highlight">
+          <strong>🎯 Zero Overlap Guarantee:</strong> This test consists of <strong>90 brand-new scenario questions</strong> drawn from a completely distinct question bank. None of the questions from your previous practice exam appear in this test.
+        </div>
+
+        <div class="setup-options">
+          <div class="option-group">
+            <span class="option-label">Choose Practice Mode</span>
+            <div class="mode-grid">
+              <div class="mode-card active" data-mode="full">
+                <div class="mode-title">📝 Full Mock Exam</div>
+                <div class="mode-desc">90 questions · 90 minutes. Exactly weighted across all 5 CompTIA domains.</div>
+              </div>
+              <div class="mode-card" data-mode="quick">
+                <div class="mode-title">⚡ Quick Drill</div>
+                <div class="mode-desc">30 randomly selected questions · 30 minutes. Fast targeted warm-up.</div>
+              </div>
+              <div class="mode-card" data-mode="marathon">
+                <div class="mode-title">🏃 Complete Marathon</div>
+                <div class="mode-desc">All 90 questions · Untimed or extended time. Deep comprehensive study.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="option-group">
+            <span class="option-label">Target Weak Domain (Optional)</span>
+            <select id="domainFilterSelect" style="background:var(--bg-card); color:var(--text-primary); border:1px solid var(--border-color); border-radius:8px; padding:10px; font-size:0.9rem;">
+              <option value="all">All 5 Domains (Standard Weighted CompTIA Distribution)</option>
+              <option value="1.0 General Security Concepts">Domain 1.0 — General Security Concepts (12 questions)</option>
+              <option value="2.0 Threats, Vulnerabilities, and Mitigations">Domain 2.0 — Threats, Vulnerabilities, & Mitigations (18 questions)</option>
+              <option value="3.0 Security Architecture">Domain 3.0 — Security Architecture (14 questions)</option>
+              <option value="4.0 Security Operations">Domain 4.0 — Security Operations (28 questions)</option>
+              <option value="5.0 Security Program Management and Oversight">Domain 5.0 — Security Program Management & Oversight (18 questions)</option>
+            </select>
+          </div>
+
+          <div class="option-group" style="gap: 12px; margin-top: 6px;">
+            <label class="checkbox-row">
+              <input type="checkbox" id="tutorModeCheck">
+              <span><strong>Tutor Mode</strong> (Display in-depth rationale immediately after selecting each answer)</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" id="untimedCheck">
+              <span><strong>Untimed Mode</strong> (Remove the 90-minute countdown timer for relaxed study)</span>
+            </label>
+            <label class="checkbox-row">
+              <input type="checkbox" id="shuffleCheck" checked>
+              <span><strong>Shuffle Questions</strong> (Randomize order to avoid positional memorization)</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="startExamBtn" style="width: 100%; padding: 14px; font-size: 1.05rem;">
+          🚀 Start Practice Test 5
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. EXAM ACTIVE SCREEN -->
+    <div id="examScreen">
+      <div class="exam-layout">
+
+        <!-- Left: Question Panel -->
+        <div class="question-panel">
+          <div class="q-meta-bar">
+            <div>
+              <span style="font-weight: 700; font-size: 0.95rem; margin-right: 8px;">Question <span id="currentQNum">1</span> of <span id="totalQNum">90</span></span>
+              <span class="q-domain-pill" id="currentQDomain">1.0 General Security Concepts</span>
+            </div>
+            <button class="flag-btn" id="flagQuestionBtn">
+              <span>📌</span> Flag for Review
+            </button>
+          </div>
+
+          <div class="q-text" id="questionText">Loading question text...</div>
+
+          <div class="choices-list" id="choicesContainer">
+            <!-- Dynamic choices inserted here -->
+          </div>
+
+          <!-- Tutor Mode Feedback Box -->
+          <div class="tutor-box" id="tutorExplanationBox">
+            <div class="tutor-title">💡 Explanation & Key Rationale:</div>
+            <div id="tutorExplanationText">Explanation content here.</div>
+          </div>
+
+          <div class="q-footer">
+            <button class="btn btn-secondary" id="prevQBtn">← Previous</button>
+            <div style="display:flex; gap:10px;">
+              <button class="btn btn-outline" id="clearSelectionBtn">Clear</button>
+              <button class="btn btn-primary" id="nextQBtn">Next →</button>
+              <button class="btn btn-danger" id="finishExamBtn" style="display:none;">Finish & Submit Exam</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Navigator Sidebar -->
+        <div class="sidebar-panel">
+          <div class="sidebar-title">
+            <span>Question Matrix</span>
+            <span id="answeredSummary">0 / 90</span>
+          </div>
+
+          <div class="grid-filter-bar">
+            <div class="grid-filter-btn active" data-filter="all">All</div>
+            <div class="grid-filter-btn" data-filter="flagged">Flagged</div>
+            <div class="grid-filter-btn" data-filter="unanswered">Unanswered</div>
+          </div>
+
+          <div class="q-grid" id="questionGrid">
+            <!-- 90 interactive grid buttons -->
+          </div>
+
+          <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+            <button class="btn btn-danger" id="sidebarSubmitBtn" style="width:100%; font-size:0.85rem;">
+              Submit Exam for Grading
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 3. RESULTS / SCORE REPORT SCREEN -->
+    <div id="resultsScreen">
+      <div class="results-card">
+        <div class="results-banner">
+          <span class="verdict-badge" id="verdictBadge">NEEDS REVIEW</span>
+          <div class="score-big" id="scaledScoreDisplay">490 / 900</div>
+          <div class="score-sub">
+            Raw Score: <strong id="rawScoreDisplay">44 / 90 (49%)</strong> • CompTIA Passing Standard: <strong>750 / 900 (83.3%)</strong>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-val" id="statCorrect">0</div>
+            <div class="stat-lbl">Correct Answers</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="statAccuracy">0%</div>
+            <div class="stat-lbl">Overall Accuracy</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="statTimeSpent">0m 0s</div>
+            <div class="stat-lbl">Time Elapsed</div>
+          </div>
+        </div>
+
+        <!-- Domain Performance Breakdown -->
+        <div class="domain-breakdown">
+          <h3 style="font-size: 1.1rem; margin-bottom: 16px; font-weight: 700;">📊 Domain Performance Breakdown</h3>
+          <div id="domainBarsContainer">
+            <!-- Injected progress bars -->
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions-bar" style="display:flex; gap:12px; margin-bottom: 36px; flex-wrap:wrap;">
+          <button class="btn btn-primary" id="retakeWrongBtn">🎯 Practice Missed Questions Only</button>
+          <button class="btn btn-secondary" id="retakeFullBtn">🔄 Retake Same Exam</button>
+          <button class="btn btn-secondary" id="newExamBtn">🏠 Back to Exam Setup</button>
+          <button class="btn btn-outline" id="printReportBtn">🖨️ Print / Save PDF</button>
+        </div>
+
+        <!-- Detailed Explanations & Review -->
+        <div class="review-section">
+          <div class="review-section-header">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">📝 Detailed Answer Key & CompTIA Explanations</h3>
+            <div class="review-filter-bar" style="display:flex; gap:6px;">
+              <button class="grid-filter-btn active" data-rfilter="all">All (90)</button>
+              <button class="grid-filter-btn" data-rfilter="incorrect">Incorrect</button>
+              <button class="grid-filter-btn" data-rfilter="correct">Correct</button>
+              <button class="grid-filter-btn" data-rfilter="flagged">Flagged</button>
+            </div>
+          </div>
+
+          <div id="reviewCardsContainer">
+            <!-- Review cards injected here -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    "use strict";
+
+    const RAW_QUESTIONS = [{"id": 1, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "What change management term is used to describe the processes that an organization uses for each change that is made to ensure that a consistent process is used?", "options": ["Standard operating procedures", "A change plan", "Fixed operating procedures", "A backout plan"], "correct": 0, "letter": "A", "explanation": "Standard operating procedures (SOPs) are an organization's normal processes that it uses. SOPs are helpful to ensure that organizations have consistent practices that are in use on an ongoing basis. A change plan is specific to a change, and a backout plan is used to undo a change if problems arise. Fixed operating procedures is not a common term used in change management."}, {"id": 2, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Jack knows that there are three common types of database encryption. Which of the following is not a common type of database encryption?", "options": ["Sensitivity‐based encryption", "Transparent data encryption", "Field‐level encryption", "Column‐level encryption"], "correct": 0, "letter": "A", "explanation": "Transparent data encryption, field‐level, and column‐level encryption are all common types of database encryption. Sensitivity‐based encryption is not and was made up for this question."}, {"id": 3, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Ujamaa wants to conduct a gap analysis as part of his security efforts. Which of the following best describes what he will analyze?", "options": ["Which services are not configured properly", "Whether current patches are installed on all systems", "The security program as implemented versus best practices", "Legal requirements versus the security program"], "correct": 2, "letter": "C", "explanation": "Gap analysis focuses on reviewing a security program against common best practices to identify where gaps between practices exist. Ujamaa will select an information security standard like NIST 800‐53, ISO 27001, or another relevant standard and will validate his organization's controls implementation against it. This may include things like which services are not configured properly, whether patches are installed, and if legal requirements are being met, but any of those answers is not a complete answer in this context."}, {"id": 4, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Brandon wants to deploy a detective control that will help him with physical security threats. Which of the following fits his needs?", "options": ["Fencing", "Lighting", "Video surveillance", "Bollards"], "correct": 2, "letter": "C", "explanation": "Video surveillance is a detective control and is useful for detecting security events after they have happened. Fencing, bollards, and lighting are typically considered preventive controls."}, {"id": 5, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Jack has deployed a system that appears to attackers to be a vulnerable system. The system is specifically designed to capture information and data from attacks to allow for later analysis. What type of tool has Jack deployed?", "options": ["A tarpit", "A honeypot", "A beehive", "An intrusion detection system"], "correct": 1, "letter": "B", "explanation": "Honeypots are designed to appear to be vulnerable. They are heavily instrumented to capture attacker techniques and tools, allowing for analysis by defenders. Tarpits slow down attackers, beehives are not a term used in this context, and intrusion detection systems (IDSs) are designed to identify and alert about attacks but are not designed to appear to be vulnerable."}, {"id": 6, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Renee wants to ensure that her logs support nonrepudiation. What should she do to ensure this?", "options": ["Encrypt, then hash the logs.", "Hash the logs and then digitally sign them.", "Digitally sign the log file, then encrypt it.", "Hash, then encrypt the logs."], "correct": 1, "letter": "B", "explanation": "Calculating a cryptographic hash allows the log's hash to be compared against copies to validate that they match. Digitally signing the hash ensures that it can be verified to be the original. Encrypting the log does not allow it to be verified against an original. Without a digital signature, a hash does not meet Renee's requirement for nonrepudiation."}, {"id": 7, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Isaac wants to deploy sensors to detect intruders in a facility, but he is concerned about the sensors being overly sensitive. What type of sensor is best suited to detecting intruders in an open office environment without significant expense or issues with sensitivity?", "options": ["Infrared", "Pressure", "Microwave", "Ultrasonic"], "correct": 0, "letter": "A", "explanation": "Infrared sensors are commonly used in open spaces. They are well suited to detecting individuals and are less likely to be overly sensitive. They can cover broader fields than a pressure sensor, and ultrasonic sensors are not commonly deployed as facility‐level security sensors."}, {"id": 8, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Wayne wants to allow systems to claim identities as part of his AAA process. Which of the following is most commonly used to identify both individuals and systems?", "options": ["Tokens", "Smartcards", "Certificates", "Usernames"], "correct": 2, "letter": "C", "explanation": "Certificates are commonly used to identify both individuals and systems. Tokens, smartcards, and usernames are primarily used by individuals."}, {"id": 9, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "What are considerations like database and network connectivity, authentication system access, and network time availability considered in the context of change management processes?", "options": ["Allowed services", "Standard operating procedures", "Denied services", "Dependencies"], "correct": 3, "letter": "D", "explanation": "Database and network connectivity, authentication system access, and network time availability are all common dependencies that must be considered when making changes. Applications and services may fail to start properly if these dependencies are not available when they attempt to start."}, {"id": 10, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "What role does the policy engine play in a zero‐trust environment?", "options": ["It creates new administrative policies based on user behavior.", "It grants access based on policies created by administrators and based on security systems data.", "It enforces policies by monitoring connections between clients and servers.", "It suggests new administrative policies based on usage patterns for adoption by the organization."], "correct": 1, "letter": "B", "explanation": "Policy engines decide whether to grant access to resources based on policies created by administrators and based on data provided by tools like endpoint detection and response tools, threat intelligence feeds, and security information and event management tools. It does not create or suggest administrative policies, and it does not directly enforce policies—that occurs at a policy enforcement point, typically through a zero‐trust agent on the client and at the resource or service side."}, {"id": 11, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Which of the following is not a common post‐change activity found in change management practices?", "options": ["Updating diagrams", "Updating procedures", "Updating policies", "Updating contracts"], "correct": 3, "letter": "D", "explanation": "Contracts tend to be updated as part of a contract renewal process, not as part of a change management process related to technical change."}, {"id": 12, "domain": "1.0 General Security Concepts", "type": "single", "selectCount": 1, "question": "Which of the following activities should Alaina not restrict as part of her preparation for a change window?", "options": ["Patching", "Scaling clustered systems up or down", "Changing hostnames", "Modifying database configurations"], "correct": 1, "letter": "B", "explanation": "Change windows rely on the documented change being able to be made. Patching and other technical changes may lead to unexpected interactions or dependency changes that are not accounted for in the original change window. Scaling a clustered system up or down does not change the systems and should not be restricted during a change management window."}, {"id": 13, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Henry wants to decommission a server that was used to store sensitive data. What step should he take to ensure the decommissioning process protects the organization’s data?", "options": ["Reformat the drives as part of the decommissioning process.", "Physically destroy the drives as part of the decommissioning process.", "Remove the system from organizational inventory as part of the decommissioning process.", "Physically destroy the entire system as part of the decommissioning process."], "correct": 1, "letter": "B", "explanation": "Since the drives stored sensitive data and no mention of encryption was made, the drives should be physically destroyed to ensure that no data leakage can occur. It is not necessary to destroy the entire system to ensure this. Reformatting drives does not wipe data, and simply removing the system from inventory is typically part of the process but does not protect organizational data."}, {"id": 14, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Renee has a large number of workstations and servers in her corporate environment and wants to more effectively monitor logs for them. What solution from the following list is best suited to identifying and alerting on issues in a large‐scale environment?", "options": ["Centralized logging", "A SIEM", "An IPS", "An EDR"], "correct": 1, "letter": "B", "explanation": "A security information and event management tool (SIEM) is designed to ingest and analyze large volumes of logs and then alert on issues and events. Centralized logging is useful but needs additional tools to alert on issues. An IPS is used to detect and potentially respond to network‐based attacks, not to gather and analyze logs, and EDR tools are useful for monitoring endpoints, not for large‐scale log ingestion and analysis."}, {"id": 15, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Patrick is reviewing potential attack surfaces for his small business and recently deployed new networked printers for each of his three locations. What should his first action be to begin to properly secure their web management interfaces?", "options": ["Update the firmware.", "Change their default IP address.", "Change the default administrator password.", "Disable unnecessary services."], "correct": 2, "letter": "C", "explanation": "Patrick knows that the first thing he should do is change the administrator password. Any further security changes, including updating firmware and disabling unnecessary services, can be made once the administrative account has been properly secured. Changing the default IP address does not necessarily improve security for the device."}, {"id": 16, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Paul has performed an nmap scan of a new network connected device. He notices TCP ports 22, 80, and 443 are open. If his hardening guidelines only allow encrypted management interfaces, what port or ports should he disable from this list?", "options": ["22", "80", "22 and 80", "80 and 443"], "correct": 1, "letter": "B", "explanation": "Paul knows that SSH typically uses port 22, HTTP uses port 80, and HTTPS uses port 443. HTTP is the only unencrypted protocol from that list, and thus he should disable port 80."}, {"id": 17, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "The following graphic shows a network connection between two systems, and then a network‐based attack. What type of attack is shown?", "options": ["A denial‐of‐service attack", "A SQL injection attack", "An on‐path attack", "A directory traversal attack"], "correct": 2, "letter": "C", "explanation": "An on‐path attack redirects traffic to allow an attacker to see and potentially modify the traffic as shown in the graphic. SQL injection is accomplished by inserting SQL into web queries or application traffic, denial‐of‐service will target a service and no indication of that is shown, and a directory traversal attack will typically show directory manipulation like ../../."}, {"id": 18, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Which of the following protocols is most commonly associated with credential relaying attacks?", "options": ["RDP", "NTLM", "SQL", "TLS"], "correct": 1, "letter": "B", "explanation": "While dated, NTLM was historically one of the most common targets of credential relay attacks. RDP, SQL, and TLS are less commonly associated with credential relay attacks. Modern protocols implement encryption, session, IDs, and one‐time passwords to prevent this type of attack."}, {"id": 19, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "After a recent laptop theft, Jaime’s organization is worried about data breaches driven by lost devices. What endpoint hardening technique is best suited to preventing this?", "options": ["Encryption", "Host‐based IPS", "Disabling ports and protocols", "Changing default passwords"], "correct": 0, "letter": "A", "explanation": "Encryption is the appropriate solution to prevent data loss if a system is stolen. A HIPS, disabling ports and protocols, and changing default passwords will not prevent data acquisition from a drive."}, {"id": 20, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Derek wants to conduct a birthday attack against a digital signature. Which of the following best describes the process he would need to take to achieve his goal?", "options": ["He needs to prepare both a correct and a malicious document and find ways to modify the correct document until its encryption matches the malicious document.", "He needs to make sure all dates match in both a correct and a malicious document.", "He needs to ensure that the file length and creation date match for both a correct document and a malicious document.", "He needs to prepare both a correct and a malicious document, then find ways to modify the malicious document until its hash matches the hash of the correct document."], "correct": 3, "letter": "D", "explanation": "Derek knows that attacking a digital signature requires that hashes match for both an original document and a malicious document. He will modify the malicious document until he finds a way to convey the changes he needs while retaining the matching hash. This type of attack is why hashing algorithms needs to be resistant to birthday attacks."}, {"id": 21, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "What term is used to describe the problem when two files have the same hash?", "options": ["A birthday attack", "A collision", "A bingo", "A match‐the‐hash attack"], "correct": 1, "letter": "B", "explanation": "Collisions occur when two files have the same hash. Secure hashing solutions are collision resistant, meaning that collision‐based hash attacks should be unlikely unless an insecure or outdated hash algorithm like MD5 is selected. Birthday attacks leverage the likelihood of collisions in a random set of attacks rather than by progressing linearly through the solution set. Bingo attacks and match‐the‐hash are both made up for this question."}, {"id": 22, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Kara wants to protect against the most common means of firmware‐based exploits. Which of the following is not a common firmware defense mechanism for the vendors of devices that use firmware?", "options": ["Using signed firmware updates", "Using input validation for user input", "Encrypting firmware", "Code review processes for firmware"], "correct": 2, "letter": "C", "explanation": "Firmware is typically not encrypted, but it is commonly digitally signed. Using input validation and code review both help to keep firmware secure."}, {"id": 23, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Ines is concerned about messaging through tools like Discord and Slack as attack vectors. What can she do to most effectively limit the attack surface for threats like this?", "options": ["Deploy EDR tools to all workstations and devices.", "Deploy an organizational communication tool or instance instead of using public tools.", "Deploy messaging‐aware firewalls.", "Deploy messaging‐aware IPS systems."], "correct": 1, "letter": "B", "explanation": "In many cases, the best option to limit the attack surface of messaging applications is to use a trusted, internally managed organizational instance rather than public tools or instances. EDR, firewalls, and IPS are not as effective with messaging‐based attacks."}, {"id": 24, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Ana’s vendor has informed her that the hardware her organization uses is considered end‐of‐life. What should Ana do?", "options": ["Identify replacement hardware and purchase it immediately.", "Purchase an extended support contract from a third‐party vendor.", "Begin plans to phase out the equipment before it reaches end‐of‐support.", "Install final patches and then isolate the hardware from the network."], "correct": 2, "letter": "C", "explanation": "End‐of‐life announcements typically mean that the equipment is no longer being produced or sold. The equipment will typically have a longer supported life, so Ana can continue to use it but should plan for what to do when end‐of‐support occurs. At that time, replacing it, isolating it, or purchasing third‐party support are all possible solutions depending on Ana's needs."}, {"id": 25, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "What threat vector is most impacted by how Windows handles autorun.inf files?", "options": ["Removable devices", "Open service ports", "Unsecure Wi‐Fi", "Watering hole attacks"], "correct": 0, "letter": "A", "explanation": "Removable devices like USB thumb drives, digital picture frames, and even keyboards and mice with onboard storage rely on autorun.inf files to automatically run software they provide. While that functionality typically focuses on printing, opening folders, or running media players, it can also be leveraged to automatically run malware. For this reason, many organizations ban removable drives or prohibit autorun from working. Open service ports are commonly associated with applications and services, and autorun doesn't set up or run these, nor does it impact Wi‐Fi. Watering hole attacks require attackers to compromise or gain access to a site that targets commonly visit so that they deliver malware to their targets."}, {"id": 26, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Raj wants to reduce the attack surface for a newly purchased laptop. What hardening technique will help him reduce the possibility of remote exploits while also decreasing the amount of ongoing patch management he needs to do for the system?", "options": ["Encrypt the system’s boot drive.", "Install EDR software.", "Remove unnecessary software.", "Change any default passwords."], "correct": 2, "letter": "C", "explanation": "Raj knows that removing unnecessary software reduces a system's attack surface and also means that he won't have to patch and maintain the software he removes. Encrypting a drive, installing EDR, and changing default passwords won't reduce patch management, but EDR and changing default passwords could help with remote exploit prevention."}, {"id": 27, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Allan wants to detect brute‐force physical attacks. What should he do if he wants to detect the broadest range of physical attacks?", "options": ["Deploy a monitored security camera system.", "Hire a guard to patrol the facility.", "Conduct regular inspections of the facility.", "Set up an alarm system."], "correct": 0, "letter": "A", "explanation": "A monitored camera system will detect the broadest range of attacks. Guards will only detect brute‐force attacks when they are in the area, and cameras can cover more spaces at once. Inspections may miss attacks where camera recordings and monitoring can show failed and successful attacks. An alarm system won't detect attacks by insiders, who may access spaces they have access to in order to perform malicious actions."}, {"id": 28, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Which of the following is not a common threat vector associated with SMS‐based attacks?", "options": ["Malicious links", "SMS‐based phishing", "SMS‐delivered images", "MFA exploits"], "correct": 2, "letter": "C", "explanation": "Images are not a common threat vector via SMS. Malicious links, phishing via text, and multifactor authentication (MFA) exploits, including sending MFA notices until the recipient approves an MFA request, are all common SMS‐related threat vectors."}, {"id": 29, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "During a regular review of logs, Jennifer notices that a regularly scheduled script that copies files to another server every hour has run multiple times within the last hour. What indicator of compromise should she categorize this as?", "options": ["Concurrent session use", "Out‐of‐cycle logging", "Missing logs", "Impossible travel"], "correct": 1, "letter": "B", "explanation": "Jennifer should note this as out‐of‐cycle logging. It could simply indicate a flaw in the script or another innocuous issue, or it could indicate an attacker exploring scripts to identify what information can be obtained. Concurrent session use occurs when a session is in use from multiple browsers or systems, missing logs are when logs are entirely missing or empty rather than occurring with more frequency than expected, and impossible travel occurs when events or logins occur from different locations by the same user who could not have traveled that distance in the time between the events."}, {"id": 30, "domain": "2.0 Threats, Vulnerabilities, and Mitigations", "type": "single", "selectCount": 1, "question": "Pete uses a technique that injects code into memory used by another process to allow him to control what the host program does. What is this technique called for Windows dynamically linked libraries?", "options": ["WinBuff attacks", "DLL injection", "A SYRINGE attack", "A memory traversal attack"], "correct": 1, "letter": "B", "explanation": "DLL injection forces a process to load and run code from a dynamically linked library (DLL) that was not originally used by the application or software. This can be used to modify behaviors of the program or to perform malicious actions through the application. WinBuff, SYRINGE, and memory traversal were all made up for this question."}, {"id": 31, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Binary data is an example of what type of data?", "options": ["Non‐human‐readable", "Encrypted", "Human‐readable", "Masked"], "correct": 0, "letter": "A", "explanation": "Binary data is a form of non‐human‐readable data. Encrypted data may be in binary format, but not all binary data is encrypted. Binary data is not human‐readable, nor is it masked, which hides elements of data to allow for it to be used without exposing the underlying data."}, {"id": 32, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "What IP address does a load balancer provide for external connections to connect to web servers in a load‐balanced group?", "options": ["The IP address for each server, in a prioritized order", "The load balancer's IP address", "The IP address for each server in a round‐robin order", "A virtual IP address"], "correct": 3, "letter": "D", "explanation": "Load balancers provide a virtual IP, or VIP. Traffic sent to the VIP is directed to servers in the pool based on the load‐balancing scheme that that pool is using—often a round‐robin scheme, but other versions that include priority order and capacity tracking or ratings are also common. The load balancer's IP address is normally used to administer the system, and individual IP addresses for the clustered hosts are shielded by the load balancer to prevent traffic from consistently going to those hosts, thus creating a failure or load point."}, {"id": 33, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Matt has enabled port security on the network switches in his building. What does port security do?", "options": ["Filters by MAC address", "Prevents routing protocol updates from being sent from protected ports", "Establishes private VLANs", "Prevents duplicate MAC addresses from connecting to the network"], "correct": 0, "letter": "A", "explanation": "Port security filters by MAC address, permitting allow listed MAC addresses to connect to the port and blocking block listed MAC addresses. Port security can be static, using a predetermined list or dynamically allowing a specific number of addresses to connect, or it can be run in a combination mode of both static and dynamic modes."}, {"id": 34, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Tom is responsible for VPN connections in his company. His company uses IPSec for VPNs. What is the primary purpose of AH in IPSec?", "options": ["Encrypt the entire packet.", "Encrypt just the header.", "Authenticate the entire packet.", "Authenticate just the header."], "correct": 2, "letter": "C", "explanation": "Authentication headers (AHs) provide complete packet integrity, authenticating the packet and the header. Authentication headers do not provide any encryption at all, and authentication headers authenticate the entire packet, not just the header."}, {"id": 35, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Abigail is responsible for setting up a network‐based intrusion prevention system (NIPS) on her network. The NIPS is located in one particular network segment. She is looking for a passive method to get a copy of all traffic to the NIPS network segment so that it can analyze the traffic. Which of the following would be her best choice?", "options": ["Using a network tap", "Using port mirroring", "Setting the NIPS on a VLAN that is connected to all other segments", "Setting up a NIPS on each segment"], "correct": 0, "letter": "A", "explanation": "Network taps copy all traffic to another destination, allowing traffic visibility without a device inline. They are completely passive methods of getting network traffic to a central location. Port mirroring would get all the traffic to the network‐based intrusion prevention system (NIPS) but is not completely passive. It requires the use of resources on switches to route a copy of the traffic. Incorrect switch configurations can cause looping. Configuring loop detection can prevent looped ports. Putting a network NIPS on every segment can be very expensive and require extensive configuration work. Setting up a NIPS on each segment would also dramatically increase administrative efforts."}, {"id": 36, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Janice is explaining how IPSec works to a new network administrator. She is trying to explain the role of IKE. Which of the following most closely matches the role of IKE in IPSec?", "options": ["It encrypts the packet.", "It establishes the SAs.", "It authenticates the packet.", "It establishes the tunnel."], "correct": 1, "letter": "B", "explanation": "Internet key exchange (IKE) is used to set up security associations (SAs) on each end of the tunnel. The security associations have all the settings (i.e., cryptographic algorithms, hashes) for the tunnel. IKE is not directly involved in encrypting or authenticating. IKE itself does not establish the tunnel—it establishes the SAs."}, {"id": 37, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Emily manages the IDS/IPS for her network. She has a network‐based intrusion prevention system (NIPS) installed and properly configured. It is not detecting obvious attacks on one specific network segment. She has verified that the NIPS is properly configured and working properly. What would be the most efficient way for her to address this?", "options": ["Implement port mirror/monitor mode for that segment.", "Install a NIPS on that segment.", "Upgrade to a more effective NIPS.", "Isolate that segment on its own VLAN."], "correct": 0, "letter": "A", "explanation": "The NIPS is not seeing the traffic on that network segment. By implementing port mirroring, the traffic from that segment can be copied to the segment where the NIPS is installed. Installing a network IPS on the segment would require additional resources. This would work but is not the most efficient approach. Nothing in this scenario suggests that the NIPS is inadequate. It just is not seeing all the traffic. Finally, isolating the segment to its own VLAN would isolate that network segment but would still not allow the NIPS to analyze the traffic from that segment."}, {"id": 38, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "You are responsible for an e‐commerce site. The site is hosted in a cluster. Which of the following techniques would be best in assuring availability?", "options": ["A VPN concentrator", "Aggregate switching", "An SSL accelerator", "Load balancing"], "correct": 3, "letter": "D", "explanation": "Load‐balancing the cluster will prevent any single server from being overloaded. And if a given server is offline, other servers can take on its workload. A VPN concentrator, as the name suggests, is used to initiate virtual private networks (VPNs). Aggregate switching can shunt more bandwidth to the servers but won't mitigate the threat of one or more servers being offline. SSL accelerators are a method of offloading processor‐intensive public key encryption for Transport Layer Security (TLS) and Secure Sockets Layer (SSL) to a hardware accelerator."}, {"id": 39, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Ryan is concerned about the security of his company's web application. Since the application processes confidential data, he is most concerned about data exposure. Which of the following would be the most important for him to implement?", "options": ["WAF", "TLS", "NIPS", "NIDS"], "correct": 1, "letter": "B", "explanation": "The correct answer is to encrypt all the web traffic to this application using Transport Layer Security (TLS). This is one of the most fundamental security steps to take with any website. A web application firewall (WAF) is probably a good idea, but it is not the most important thing for Ryan to implement. While a network‐based intrusion prevention system (NIPS) or network‐based intrusion detection system (NIDS) may be a good idea, those should be considered after TLS is configured."}, {"id": 40, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Claire has been notified of a zero‐day flaw in a web application. She has the exploit code, including a SQL injection attack that is being actively exploited. How can she quickly react to prevent this issue from impacting her environment if she needs the application to continue to function?", "options": ["Deploy a detection rule to her IDS.", "Manually update the application code after reverse‐engineering it.", "Deploy a fix via her WAF.", "Install the vendor‐provided patch."], "correct": 2, "letter": "C", "explanation": "Claire's best option is to deploy a detection and fix via her web application firewall (WAF) that will detect the SQL injection (SQLi) attempt and prevent it. An intrusion detection system (IDS) only detects attacks and cannot stop them. Manually updating the application code after reverse‐engineering it will take time, and she may not even have the source code or the ability to modify it. Finally, vendor patches for zero days typically take some time to come out even in the best of circumstances, meaning that Claire could be waiting on a patch for quite a while if that is the option she chooses."}, {"id": 41, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Christina wants to ensure that session persistence is maintained by her load balancer. What is she attempting to do?", "options": ["Ensure that all of a client's requests go to the same server for the duration of a given session or transaction.", "Assign the same internal IP address to clients whenever they connect through the load balancer.", "Ensure that all transactions go to the current server in a round‐robin during the time it is the primary server.", "Assign the same external IP address to all servers whenever they are the primary server assigned by the load balancer."], "correct": 0, "letter": "A", "explanation": "Session persistence makes sure that all of a client's traffic for a transaction or session goes to the same server or service. The remaining options do not properly describe how session persistence works."}, {"id": 42, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Next‐generation firewalls include many cutting‐edge features. Which of the following is not a common next‐generation firewall capability?", "options": ["Geolocation", "IPS and/or IDS", "Sandboxing", "SQL injection"], "correct": 3, "letter": "D", "explanation": "Although next‐generation firewalls (NGFWs) provide may defensive capabilities, SQL injection (SQLi) is an attack instead of a defense. In addition to geolocation, intrusion detection system (IDS) and intrusion prevention system (IPS), and sandboxing capabilities, many next‐generation firewalls include web application firewalls, load balancing, IP reputation and URL filtering, and antimalware and antivirus features."}, {"id": 43, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Patrick has been asked to identify a UTM appliance for his organization. Which of the following capabilities is not a common feature for a UTM device?", "options": ["IDS and or IPS", "Antivirus/antimalware", "MDM", "DLP"], "correct": 2, "letter": "C", "explanation": "UTM, or unified threat management, devices commonly serve as firewalls, intrusion detection system (IDS)/intrusion prevention system (IPS), antivirus/antimalware, web proxies, web application and deep packet inspection, secure email gateways, data loss prevention (DLP), security information and event management (SIEM), and even virtual private networking (VPN) devices. They aren't mobile device management (MDM) or universal endpoint management devices, however, since their primary focus is on network security, not systems or device management."}, {"id": 44, "domain": "3.0 Security Architecture", "type": "single", "selectCount": 1, "question": "Theresa implements a network‐based IDS. What can she do to traffic that passes through the IDS?", "options": ["Review the traffic based on rules and detect and alert about unwanted or undesirable traffic.", "Review the traffic based on rules and detect and stop traffic based on those rules.", "Detect sensitive data being sent to the outside world and encrypt it as it passes through the IDS.", "All of the above."], "correct": 0, "letter": "A", "explanation": "IDSs, or intrusion detection systems, can only detect unwanted and malicious traffic based on the detection rules and signatures that they have. They cannot stop traffic or modify it. An IPS, or intrusion prevention system, that is placed in line with network traffic can take action on that traffic. Thus, IDSs are often used when it is not acceptable to block network traffic, or when a tap or other network device is used to clone traffic for inspection."}, {"id": 45, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Ted needs to preserve a server for forensic purposes. Which of the following should he not do?", "options": ["Turn the system off to ensure that data does not change.", "Remove the drive while the system is running to ensure that data does not change.", "Leave the machine connected to the network so that users can continue to use it.", "All of the above."], "correct": 3, "letter": "D", "explanation": "To properly preserve the system, Ted needs to ensure that it does not change. Turning off the system will cause anything in memory to be lost, which may be needed for the investigation. Removing the drive while a system is running can cause data to be lost. Instead, live‐imaging the machine and its memory may be required. Allowing users to continue to use a machine will result in changes, which can also damage Ted's ability to perform a forensic investigation."}, {"id": 46, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Jessica wants to review the network traffic that her Windows system has sent to determine if a file containing sensitive data was uploaded from the system. What Windows log file can she use to find this information?", "options": ["The application log", "The network log", "The security log", "None of the above"], "correct": 3, "letter": "D", "explanation": "Windows does not log network traffic at a level of granularity that will show if a file has been uploaded. Basic traffic statistics can be captured, but without additional sensors and information‐gathering capabilities, Jessica will not be able to determine if files are sent from a Windows system."}, {"id": 47, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "What term is used to describe the documentation trail for control, analysis, transfer, and final disposition of evidence for digital forensic work?", "options": ["Evidence log", "Paper trail", "Chain of custody", "Digital footprint"], "correct": 2, "letter": "C", "explanation": "The chain of custody in forensic activities tracks who has a device, data, or other forensic artifact at any time, when transfers occur, who performed analysis, and where the item, system, or device goes when the forensic process is done. Evidence logs may be maintained by law enforcement to track evidence that is gathered. Paper trail and digital footprint are not technical terms used for digital forensics."}, {"id": 48, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Naomi has acquired an image of a drive as part of a forensic process. She wants to ensure that the drive image matches the original. What should she create and record to validate this?", "options": ["A third image to compare to the original and new image", "A directory listing to show that the directories match", "A photographic image of the two drives to show that they match", "A hash of the drives to show that their hashes match"], "correct": 3, "letter": "D", "explanation": "Hashing using MD5 or SHA1 is commonly used to validate that a forensic image matches the original drive. Many forensic duplicators automatically generate a hash of both drives when they complete the imaging process to ensure that there is a documentation chain for the forensic artifacts. A third image may be useful but does not validate this. Directory listings do not prove that drives match, and photos, though useful to document the drives and serial numbers, do not validate the contents of the drives."}, {"id": 49, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Ryan has been asked to run Nessus on his network. What type of tool has he been asked to run?", "options": ["A fuzzer", "A vulnerability scanner", "A WAF", "A protocol analyzer"], "correct": 1, "letter": "B", "explanation": "Nessus is a popular vulnerability scanning tool. It is not a fuzzer, web application firewall (WAF), or protocol analyzer."}, {"id": 50, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Michelle wants to check for authentication failures on a RedHat Linux–based system. Where should she look for these event logs?", "options": ["/var/log/auth.log", "/var/log/fail", "/var/log/events", "/var/log/secure"], "correct": 3, "letter": "D", "explanation": "Red Hat stores authentication log information in /var/log/secure instead of /var/log/auth.log used by Debian and Ubuntu systems. Knowing the differences between the major distributions can help speed up your forensic and incident investigations, and consistency is one of the reasons that organizations often select a single Linux distribution for their infrastructure whenever it is possible to do so."}, {"id": 51, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Nelson has discovered malware on one of the systems he is responsible for and wants to test it in a safe environment. Which of the following tools is best suited to that testing?", "options": ["strings", "scanless", "Cuckoo", "Sn1per"], "correct": 2, "letter": "C", "explanation": "Cuckoo, or Cuckoo Sandbox, is a malware analysis sandbox that will safely run malware and then analyze and report on its behavior. strings is a command‐line tool that retrieves strings from binary data. scanless is a tool described as a port scraper, which retrieves port information without running a port scan by using websites and services to run the scan for you. Sn1per is a pen test framework."}, {"id": 52, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Lucca wants to review metadata related to a JPEG file. What will he need to do to review it?", "options": ["Change the JPEG to a GIF to see the metadata.", "Download the metadata file from the original author.", "Use a metadata viewer.", "Analyze the hash of the file."], "correct": 2, "letter": "C", "explanation": "Metadata viewing tools will allow Lucca to view the metadata that is embedded in the file itself. Metadata is not downloaded separately or available via the hash for a JPEG file."}, {"id": 53, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Jason is conducting a forensic investigation and has retrieved artifacts in addition to drives and files. What should he do to document the artifacts he has acquired?", "options": ["Image them using dd and ensure that a valid MD5sum is generated.", "Take a picture of them, label them, and add them to the chain‐of‐custody documentation.", "Contact law enforcement to properly handle the artifacts.", "Engage legal counsel to advise him how to handle artifacts in an investigation."], "correct": 1, "letter": "B", "explanation": "When artifacts are acquired as part of an investigation, they should be logged and documented as part of the evidence related to the investigation. Artifacts could include a piece of paper with passwords on it, tools or technology related to an exploit or attack, smartcards, or any other element of an investigation."}, {"id": 54, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Joseph is writing a forensic report and wants to be sure he includes appropriate detail. Which of the following would not typically be included while discussing analysis of a system?", "options": ["Validation of the system clock's time settings", "The operating system in use", "The methods used to create the image", "A picture of the person from whom the system was taken"], "correct": 3, "letter": "D", "explanation": "Forensic reports should include appropriate technical detail. Analysis of a system does not include a picture of the person from whom the system was acquired."}, {"id": 55, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Elaine wants to determine what websites a user has recently visited using the contents of a forensically acquired hard drive. Which of the following locations would not be useful for her investigation?", "options": ["The browser cache", "The browser history", "The browser's bookmarks", "Session data"], "correct": 2, "letter": "C", "explanation": "The browser cache, history, and session information will all contain information from recently visited sites. Bookmarks may indicate sites that a user has visited at some point, but a bookmark can be added without visiting a site at all."}, {"id": 56, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Susan has discovered evidence of a compromise that occurred approximately five months ago. She wants to conduct an incident investigation but is concerned about whether the data will exist. What policy guides how long logs and other data are kept in most organizations?", "options": ["The organization's data classification policy", "The organization's backup policy", "The organization's retention policy", "The organization's legal hold policy"], "correct": 2, "letter": "C", "explanation": "Organizations define retention policies for different data types and systems. Many organizations use 30‐, 45‐, 90‐, 180‐, or 365‐day retention policies, with some information required to be kept longer due to law or compliance reasons. Susan's organization may keep logs for as little as 30 days depending on storage limitations and business needs. Data classification policies typically impact how data is secured and handled. Backup policies determine how long backups are retained and rotated and may have an impact on data if the logs are backed up, but backing up logs are a less common practice due to the space they take up versus the value of having logs backed up. Legal hold practices are common, but policies are less typically defined for legal holds since requirements are set by law."}, {"id": 57, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Alaina sets her antimalware solution to move infected files to a safe storage location without removing them from the system. What type of setting has she enabled?", "options": ["Purge", "Deep‐freeze", "Quarantine", "Retention"], "correct": 2, "letter": "C", "explanation": "A quarantine process or setting will preserve malicious or dangerous files and programs without allowing them to run. This allows defenders to retrieve them for further analysis as well as to return them to use if they are determined not to be malicious, or if the malicious components can be removed from needed files. Purging, deep‐freezing, and retention are not terms used to describe this behavior or setting."}, {"id": 58, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "A senior vice president in the organization that Chuck works in recently lost a phone that contained sensitive business plans and information about suppliers, designs, and other important materials. After interviewing the vice president, Chuck finds out that the phone did not have a passcode set and was not encrypted, and that it could not be remotely wiped. What type of control should Chuck recommend for his company to help prevent future issues like this?", "options": ["Use containment techniques on the impacted phones.", "Deploy a DLP system.", "Deploy an MDM system.", "Isolate the impacted phones."], "correct": 2, "letter": "C", "explanation": "Chuck should recommend a mobile device management (MDM) system to ensure that organizational devices can be managed and protected in the future. Data loss prevention (DLP) will not stop a lost phone from being a potential leak of data, isolating the phones is not a realistic scenario for devices that will actually be used, nor is containment because the phone is out of the organization's control once lost."}, {"id": 59, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Charles wants to ensure that the forensic work that he is doing cannot be repudiated. How can he validate his attestations and documentation to ensure nonrepudiation?", "options": ["Encrypt all forensic output.", "Digitally sign the records.", "Create a MD5 checksum of all images.", "All of the above."], "correct": 1, "letter": "B", "explanation": "The most important action Charles can take while working with his forensic artifacts to provide nonrepudiation is to digitally sign the artifacts and information that he is creating in his evidence records. Encrypting the output will ensure its confidentiality but will not provide nonrepudiation by itself. MD5 checksums for images are commonly gathered but must then be signed so that they can be validated to ensure they have not been modified."}, {"id": 60, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Megan needs to conduct a forensic investigation of a virtual machine (VM) hosted in a VMware environment as part of an incident response effort. What is the best way for her to collect the VM?", "options": ["As a snapshot using the VMware built‐in tools", "By using dd to copy the VM to an external drive", "By using dd to copy the VM to an internal drive", "By using a forensic imaging device after removing the server's drives"], "correct": 0, "letter": "A", "explanation": "The best way to capture a virtual machine from a running hypervisor is usually to use the built‐in tools to obtain a snapshot of the system. Imaging tools are not typically capable of capturing machine state, and dd is not designed to capture VMs. Removing a server's drives can be challenging due to possible RAID and other specific server configuration items, and doing so might impact all other running VMs and services on the system."}, {"id": 61, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Which of the following groups is not typically part of an incident response team?", "options": ["Law enforcement", "Security analysts", "Management", "Communications staff"], "correct": 0, "letter": "A", "explanation": "Law enforcement is not typically part of organizational incident response teams, but incident response teams often maintain a relationship with local law enforcement officers. Security analysts, management, and communication staff as well as technical experts are all commonly part of a core incident response team."}, {"id": 62, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Bob needs to block Secure Shell (SSH) traffic between two security zones. Which of the following Linux iptables firewall rules will block that traffic from the 10.0.10.0/24 network to the system the rule is running on?", "options": ["iptables ‐A INPUT ‐p tcp ‐‐dport 22 ‐i eth0 ‐s 10.0.10.0/24 ‐j DROP", "iptables ‐D OUTPUT ‐p udp ‐dport 21 ‐i eth0 ‐s 10.0.10.255 ‐j DROP", "iptables ‐A OUTPUT ‐p udp ‐‐dport 22 ‐i eth0 ‐s 10.0.10.255 ‐j BLOCK", "iptables ‐D INPUT ‐p udp ‐‐dport 21 ‐I eth0 ‐s 10.0.10.0/24 ‐j DROP"], "correct": 0, "letter": "A", "explanation": "Even if you're not familiar with iptables, you can read through these rules and guess which rule includes the right details. DROP makes sense for a block, and you should know that SSH will be a TCP service on port 22."}, {"id": 63, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Amanda's organization does not currently have an incident response plan. Which of the following reasons is not one she should present to management in support of creating one?", "options": ["It will prevent incidents from occurring.", "It will help responders react appropriately under stress.", "It will prepare the organization for incidents.", "It may be required for legal or compliance reasons."], "correct": 0, "letter": "A", "explanation": "Incident response plans don't stop incidents from occurring, but they do help responders react appropriately and prepare the organization for incidents, and may be required for legal or compliance reasons."}, {"id": 64, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Which of the following scenarios is least likely to result in data recovery being possible?", "options": ["A file is deleted from a disk.", "A file is overwritten by a smaller file.", "A hard drive is quick‐formatted.", "A disk is degaussed."], "correct": 3, "letter": "D", "explanation": "Degaussing a drive uses strong magnetic fields to wipe it and is the least likely to result in recoverable data. Deleted files can often be recovered because only the file index information will be removed until that space is needed and is overwritten. Quick formats work in a similar way and will leave remnant data, and files that are overwritten by smaller files will also leave fragments of data that can be recovered and analyzed."}, {"id": 65, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "The company Charles works for has recently had a stolen company cell phone result in a data breach. Charles wants to prevent future incidents of a similar nature. Which of the following mitigation techniques would be the most effective?", "options": ["Enable FDE via MDM.", "A firewall change.", "A DLP rule.", "A new URL filter rule."], "correct": 0, "letter": "A", "explanation": "A variety of configuration changes could be pushed to mobile devices to help: setting passcodes, enabling full‐disk encryption (FDE) on mobile devices via organizationally deployed mobile device management (MDM), or even preventing some sensitive files from being downloaded or kept on those devices could all help. Firewall rules, data loss prevention (DLP) rules, and URL filters will not prevent a stolen device from being accessed and the data being exposed."}, {"id": 66, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "What incident response step is missing from point X in the following image?", "options": ["Business continuity", "Containment", "Response", "Discovery"], "correct": 1, "letter": "B", "explanation": "The Security+ exam outline talks about seven incident response process steps: Preparation, Detection, Analysis, Containment, Eradication, Recovery, and Lessons Learned."}, {"id": 67, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Jill has been asked to perform data recovery due to her forensic skills. What should she tell the person asking to perform data recovery to give her the best chance of restoring lost files that were accidentally deleted?", "options": ["Immediately reboot using the reset switch to create a lost file memory dump.", "Turn off Secure Delete so that the files can be more easily recovered.", "Do not save any files or make any changes to the system.", "All of the above."], "correct": 2, "letter": "C", "explanation": "Jill wants the least possible changes to occur on the system, so she should instruct the user to not save any files or make any changes. Rebooting the system will not create a memory dump, and may cause new files to be written or changed if patches were waiting to install or other changes are set to occur during a reboot. Turning off Secure Delete or making other changes will not impact the files that were deleted prior to that setting change."}, {"id": 68, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Veronica has completed the recovery phase of her organization's incident response plan. What phase should she move into next?", "options": ["Preparation", "Lessons learned", "Recovery", "Documentation"], "correct": 1, "letter": "B", "explanation": "The IR process used for the Security+ exam outline is Preparation, Detection, Analysis, Containment, Eradication, Recovery, and Lessons Learned. Veronica should move into the lessons learned phase."}, {"id": 69, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Michelle has been asked to sanitize a number of drives to ensure that sensitive data is not exposed when systems are removed from service. Which of the following is not a valid means of sanitizing hard drives?", "options": ["Physical destruction", "Degaussing", "Quick‐formatting the drives", "Zero‐wiping the drives"], "correct": 2, "letter": "C", "explanation": "Quick formatting merely deletes file indexes rather than removing and overwriting files, making it inappropriate for sanitization. Physical destruction will ensure that the data is not readable, as will degaussing and zero wiping."}, {"id": 70, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Bart is investigating an incident, and needs to identify the creator of a Microsoft Office document. Where would he find that type of information?", "options": ["In the filename", "In the Microsoft Office log files", "In the Windows application log", "In the file metadata"], "correct": 3, "letter": "D", "explanation": "Microsoft Office places information like the name of the creator of the file, editors, creation and change dates, and other useful information in the file metadata that is stored in each Office document. Bart can simply open the Office document to review this information, or he can use a forensic or file metadata tool to review it. Filenames may contain the creator's name, but this would only be if the creator included it. Microsoft Office does not create or maintain a log, and the application log for Windows does not contain this information."}, {"id": 71, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "Nathaniel wants to allow Chrome through the Windows Defender firewall. What type of firewall rule change will he need to permit this?", "options": ["Allow TCP 80 and 443 traffic from the system to the Internet.", "Add Chrome to the Windows Defender Firewall allowed applications.", "Allow TCP 80 and 443 traffic from the Internet to the system.", "All of the above."], "correct": 1, "letter": "B", "explanation": "Windows Defender Firewall operates on a per‐application model and can filter traffic based on whether the system is on a trusted private network or a public network. Nathaniel should allow Chrome by name in the firewall, which will allow it to send traffic without needing to specify ports or protocols."}, {"id": 72, "domain": "4.0 Security Operations", "type": "single", "selectCount": 1, "question": "What key forensic tool used to generate reports about what happened relies on correctly set system clocks to work properly?", "options": ["Disk hashing", "Timelining", "Forensic disk acquisition", "File metadata analysis"], "correct": 1, "letter": "B", "explanation": "Building a timeline, particularly from multiple systems, relies on accurately set system clocks or adding a manually configured offset. Disk hashing and acquisition does not need an accurate system clock, and file metadata can be reviewed even without an accurate clock, although accurate clock information or knowing the offset can be useful for analysis."}, {"id": 73, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Beth is a data owner in her company. Which of the following is not a typical part of the role of data owner?", "options": ["They categorize data.", "They are responsible for processing data.", "They are responsible for protecting data.", "They are responsible for data quality."], "correct": 1, "letter": "B", "explanation": "Data owners are responsible for categorizing, overseeing the usage of, and protecting data, but are typically not directly responsible for processing it."}, {"id": 74, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "NIST SP 800‐63B, Digital Identity Guidelines, provides advice on passwords and password standards. Why does the guide recommend that knowledge‐based authentication like “What was your mother's maiden name?” not be used for processes like password reset and recovery?", "options": ["Users may not remember the answer.", "Knowledge‐based authentication information is often easily discovered through searches and social media.", "Knowledge‐based authentication information is not a valid factor for MFA.", "Attackers can easily recover knowledge‐based information from compromised authentication stores."], "correct": 1, "letter": "B", "explanation": "Knowledge‐based authentication information is often easily available via social media or searches. Thus, using it as part of password recovery processes is problematic for organizations. Users will typically remember answers to knowledge‐based authentication questions. While knowledge‐based authentication isn't typically used for multifactor, something you know is a legitimate option, and knowledge‐based authentication information could be recovered from compromised organizations, but this is not a common threat model."}, {"id": 75, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "The company that Leon works for has experienced a significant malware infection and has segmented their network to prevent further spread. What risk mitigation strategy have they chosen?", "options": ["Avoid", "Transfer", "Accept", "Mitigate"], "correct": 3, "letter": "D", "explanation": "Mitigation works to limit the impact of a risk, such as by taking action like segmenting the network to prevent further malware spread. Avoidance seeks to prevent the risk from occurring. Risk transfer options move the costs of risks to another organization such as through insurance. Acceptance involves management acknowledging that the risk and its impacts may occur, and that the organization will move forward despite that chance."}, {"id": 76, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Not using hints, preventing password expiration, storing passwords only in a hashed and salted form, and using minimum password length settings are all examples of what?", "options": ["Password standards", "Multifactor authentication", "Establishing knowledge‐based passwords", "Biometrics"], "correct": 0, "letter": "A", "explanation": "Password standards typically include elements like the NIST 800‐63B recommendations, not using password hints, not expiring passwords, storing passwords in a secure way, and establishing a minimum password length of at least 8 characters for user‐generated passwords."}, {"id": 77, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Anastasia works for a government entity that requires very strong risk controls and that has significant regulatory requirements it must meet. What risk appetite model should she expect her organization to adopt?", "options": ["Expansionary", "Conservative", "Authoritarian", "Legislative"], "correct": 1, "letter": "B", "explanation": "Organizations that focus on reducing risk and that have significant compliance requirements are likely to adopt a conservative risk appetite. Expansionary risk appetite is rare when compliance and risk reduction are primary goals of the organization. Authoritarian and legislative are not typically used terms to describe risk appetite."}, {"id": 78, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Jack recently joined his organization's security team. A system was identified as likely being impacted by ransomware, and Jack was given a document that described the organization's ransomware handling practices. What common security document has he been given?", "options": ["The IR policy", "A ransomware cookbook", "A ransomware playbook", "A disaster recovery handbook"], "correct": 2, "letter": "C", "explanation": "Detailed guides to organization practices for security events are called playbooks. In this case, Jack received the organization's ransomware playbook. A policy would include high‐level statements of intent, cookbooks are not a typical term used for documents like these, and this situation involves ransomware, not a disaster recovery scenario."}, {"id": 79, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Connie wants to explain the consequences of noncompliance with data regulations to her organization's management. Which of the following is the most common statutory consequence of noncompliance with regulations?", "options": ["Data breaches", "Reputational damage", "Contractual impacts", "Fines"], "correct": 3, "letter": "D", "explanation": "Regulations most commonly have fines and sanctions as their primary punishments levied against noncompliant organizations. Data breaches and reputational damage may occur, but are they are not enforced by regulation. Contractual impacts may occur, but again are not directly enforced by regulations."}, {"id": 80, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Hank wants to create a playbook for his incident response process. What will he create?", "options": ["A detailed process for incident response", "A legal document describing incident response", "A high‐level statement of purpose for incident response", "A document describing the general incident response (IR) process"], "correct": 0, "letter": "A", "explanation": "Playbooks are detailed documents describing how to respond to a type of incident or event. An example is the CISA's Cybersecurity Incident and Vulnerability Response playbook, which includes steps like identifying anomalous activity, identifying root cause, and analyzing for common adversary TTPs (www.cisa.gov/sites/default/files/publications/Federal_Government_Cybersecurity_Incident_and_Vulnerability_Response_Playbooks_508C.pdf). They are not legal documents, are detailed instead of high‐level like a policy, and are more detailed than a general IR process document."}, {"id": 81, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "What type of agreement is used by organizations that want to protect their proprietary data while working with third parties or individuals who will have access to the data?", "options": ["SLAs", "NDAs", "MSAs", "BPAs"], "correct": 1, "letter": "B", "explanation": "Nondisclosure agreements (NDAs) are used to protect sensitive data. Service level agreements (SLAs) determine service levels and penalties if they are not met. Master service agreements (MSAs) are foundational documents determining how organizations will work together as a foundation for specific work covered in SOWs (statements of work). BPAs (business partners agreements) are used when two organizations want to do business as a partnership."}, {"id": 82, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Oliver has joined an organization and has completed employee orientation, has received his username and password, and has reviewed the new employee security training. What process has he participated in?", "options": ["Identity proofing", "Mandatory access control", "Onboarding", "Biometric enrollment"], "correct": 2, "letter": "C", "explanation": "Onboarding processes commonly include things like new employee orientation, creation of user accounts and provisioning of rights for the employee's account, and ensuring the employee has completed security training. Identity proofing may be part of that process, but was not mentioned here. Mandatory access control is an access control model, and biometric enrollment involves capturing information about an individual's biometric markers or profile."}, {"id": 83, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "What GDPR provision allows individuals to ask organization to delete their personal data?", "options": ["The right to be forgotten", "The right to deletion", "The right to privacy", "The right to ownership"], "correct": 0, "letter": "A", "explanation": "The GDPR provides the right to be forgotten, which allows individuals to request that their data be deleted. The rights to deletion, privacy, and ownership were made up for this question."}, {"id": 84, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Damian has provided a comprehensive risk register to his management, including a risk of employees violating policy by taking pictures of sensitive information displayed on their screens using their cell phones. Damian's recommendation was to ban employees from carrying personal cell phones inside the office, but management has overruled that recommendation and will allow phones. What risk management strategy has his organization's leadership chosen?", "options": ["Transfer", "Accept", "Avoid", "Mitigate"], "correct": 1, "letter": "B", "explanation": "Acceptance involves management acknowledging that the risk and its impacts may occur, and that the organization will move forward despite that chance. Risk transfer options move the costs of risks to another organization such as through insurance. Avoidance seeks to prevent the risk from occurring. Mitigation works to limit the impact of a risk, such as by taking action to prevent further malware spread."}, {"id": 85, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Which of the following is not a typical part of an offboarding process?", "options": ["Returning company equipment", "Copying files to a USB drive for the departing employee", "Disabling or removing accounts", "Changing passwords on shared accounts"], "correct": 1, "letter": "B", "explanation": "Sending organizational data with a departing employee is not a common practice. In fact, organizations often ask employees to certify that they have returned all organizational devices and data. Returning company equipment, disabling the departing employee's accounts or removing them, and changing any passwords on shared accounts are all common offboarding practices."}, {"id": 86, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Daryl wants to ensure that his organization balances risks and its goals. What risk appetite model should he suggest the organization adopts?", "options": ["Conservative", "Expansionary", "Reactionary", "Neutral"], "correct": 3, "letter": "D", "explanation": "Neutral risk appetites balance organizational goals against risk. Conservative risk appetites seek to reduce risks over addressing other goals, and expansionary risk appetites will accept risk to achieve goals. Reactionary is not a typical description of risk appetite."}, {"id": 87, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Charlene is preparing to conduct a penetration test and has been provided with access to all of her organization's information about the systems, services, and configurations involved. What type of penetration test is she conducting?", "options": ["A partially known environment test", "An unknown environment test", "A known environment test", "A third‐party test"], "correct": 2, "letter": "C", "explanation": "Known environment tests provide full information to testers, allowing them to use information about the environment without having to discover it. Partially known environment tests provide some, but not all information about the environment for testers. Unknown environment tests simulate what an attacker would encounter and do not provide information; instead, the testers have to discover it themselves. Third‐party tests are conducted by external groups or individuals and may be known, unknown, or partial knowledge tests."}, {"id": 88, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "The company that Omar works for wants to co‐develop a mobile application with a third‐party company. What type of agreement should they both sign as part of this?", "options": ["An SLA", "An NDA", "An MSA", "A BPA"], "correct": 3, "letter": "D", "explanation": "BPAs, or business partners agreements, are used when two organizations want to do business as a partnership. SLAs, or service level agreements, determine service levels and penalties if they are not met. Nondisclosure agreements, or NDAs, are used to protect sensitive data. Master service agreements, or MSAs, are foundational documents determining how organizations will work together as a foundation for specific work covered in SOWs, or statements of work."}, {"id": 89, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "Alex wants to hire a penetration tester who will simulate an attacker's potential attacks against his environment. What type of test best fits this model?", "options": ["A partially known environment test", "An unknown environment test", "A known environment test", "A third‐party test"], "correct": 1, "letter": "B", "explanation": "Unknown environment tests simulate what an attacker would encounter and do not provide information; instead, the testers have to discover it themselves. Known environment tests provide full information to testers, allowing them to use information about the environment without having to discover it. Partially known environment tests provide some, but not all information about the environment for testers. Third‐party tests are conducted by external groups or individuals and may be known, unknown, or partial knowledge tests."}, {"id": 90, "domain": "5.0 Security Program Management and Oversight", "type": "single", "selectCount": 1, "question": "What term describes the possibility of a risk occurring?", "options": ["Impact", "Likelihood", "Potential", "Rate of occurrence"], "correct": 1, "letter": "B", "explanation": "Likelihood describes the possibility of a risk occurring. Impact describes what will happen if it does, potential is not a term used in this space, and rate of occurrence is how often a risk occurs on an annual basis."}];
+    const LETTERS = ['A', 'B', 'C', 'D'];
+    const STATE_KEY = 'secplus_sim2_state_v1';
+
+    let currentExam = null;
+    let timerInterval = null;
+
+    // Theme toggling
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const savedTheme = localStorage.getItem('secplus_theme') || 'dark';
+    if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+
+    themeBtn.addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('secplus_theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('secplus_theme', 'light');
+      }
+    });
+
+    // Helper functions
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    // Screens
+    const setupScreen = document.getElementById('setupScreen');
+    const examScreen = document.getElementById('examScreen');
+    const resultsScreen = document.getElementById('resultsScreen');
+    const timerBox = document.getElementById('timerBox');
+    const pauseBtn = document.getElementById('pauseBtn');
+
+    // Mode Card Selection
+    document.querySelectorAll('.mode-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    });
+
+    // Start Exam Button
+    document.getElementById('startExamBtn').addEventListener('click', () => {
+      const activeMode = document.querySelector('.mode-card.active').dataset.mode;
+      const domainFilter = document.getElementById('domainFilterSelect').value;
+      const tutorMode = document.getElementById('tutorModeCheck').checked;
+      const untimed = document.getElementById('untimedCheck').checked;
+      const shuffle = document.getElementById('shuffleCheck').checked;
+
+      initNewExam(activeMode, tutorMode, untimed, shuffle, domainFilter);
+    });
+
+    function initNewExam(mode, tutorMode, untimed, shuffle, selectedDomain, customQuestionPool = null) {
+      let pool = customQuestionPool ? [...customQuestionPool] : [...RAW_QUESTIONS];
+      let examQuestions = [];
+      let totalTimeSeconds = 90 * 60;
+
+      if (customQuestionPool) {
+        examQuestions = customQuestionPool;
+        totalTimeSeconds = Math.max(15, Math.ceil(examQuestions.length * 1.0)) * 60;
+      } else if (selectedDomain && selectedDomain !== 'all') {
+        examQuestions = pool.filter(q => q.domain === selectedDomain);
+        totalTimeSeconds = Math.ceil(examQuestions.length * 1.0) * 60;
+      } else if (mode === 'full') {
+        // Weighted 90 questions
+        const domainGroups = {};
+        pool.forEach(q => {
+          if (!domainGroups[q.domain]) domainGroups[q.domain] = [];
+          domainGroups[q.domain].push(q);
+        });
+
+        const targets = {
+          "1.0 General Security Concepts": 12,
+          "2.0 Threats, Vulnerabilities, and Mitigations": 18,
+          "3.0 Security Architecture": 14,
+          "4.0 Security Operations": 28,
+          "5.0 Security Program Management and Oversight": 18
+        };
+
+        for (const dom in targets) {
+          const count = targets[dom];
+          const available = shuffle ? shuffleArray(domainGroups[dom] || []) : (domainGroups[dom] || []);
+          examQuestions.push(...available.slice(0, count));
+        }
+
+        totalTimeSeconds = 90 * 60;
+      } else if (mode === 'quick') {
+        const shuffledPool = shuffle ? shuffleArray(pool) : pool;
+        examQuestions = shuffledPool.slice(0, 30);
+        totalTimeSeconds = 30 * 60;
+      } else if (mode === 'marathon') {
+        examQuestions = shuffle ? shuffleArray(pool) : pool;
+        totalTimeSeconds = 120 * 60;
+      }
+
+      if (shuffle && !customQuestionPool) {
+        examQuestions = shuffleArray(examQuestions);
+      }
+
+      currentExam = {
+        mode,
+        tutorMode,
+        untimed,
+        questions: examQuestions,
+        currentIndex: 0,
+        userAnswers: {},
+        flagged: {},
+        eliminated: {},
+        totalSeconds: totalTimeSeconds,
+        secondsRemaining: totalTimeSeconds,
+        isPaused: false,
+        startTime: Date.now(),
+        endTime: null
+      };
+
+      setupScreen.style.display = 'none';
+      resultsScreen.style.display = 'none';
+      examScreen.style.display = 'block';
+
+      if (!untimed) {
+        timerBox.style.display = 'flex';
+        pauseBtn.style.display = 'inline-flex';
+        startTimer();
+      } else {
+        timerBox.style.display = 'none';
+        pauseBtn.style.display = 'none';
+      }
+
+      renderQuestion(0);
+      buildNavigatorGrid();
+      updateAnsweredCount();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      const timeDisplay = document.getElementById('timeRemaining');
+
+      timerInterval = setInterval(() => {
+        if (currentExam.isPaused) return;
+
+        currentExam.secondsRemaining--;
+        timeDisplay.textContent = formatTime(currentExam.secondsRemaining);
+
+        if (currentExam.secondsRemaining <= 300) {
+          timeDisplay.className = 'timer-danger';
+        } else if (currentExam.secondsRemaining <= 900) {
+          timeDisplay.className = 'timer-warning';
+        } else {
+          timeDisplay.className = '';
+        }
+
+        if (currentExam.secondsRemaining <= 0) {
+          clearInterval(timerInterval);
+          alert('⏰ Time is up! Submitting your exam automatically.');
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    pauseBtn.addEventListener('click', () => {
+      if (!currentExam) return;
+      currentExam.isPaused = !currentExam.isPaused;
+      pauseBtn.textContent = currentExam.isPaused ? 'Resume' : 'Pause';
+      document.querySelector('.question-panel').style.filter = currentExam.isPaused ? 'blur(6px)' : 'none';
+    });
+
+    function renderQuestion(idx) {
+      currentExam.currentIndex = idx;
+      const q = currentExam.questions[idx];
+
+      document.getElementById('currentQNum').textContent = idx + 1;
+      document.getElementById('totalQNum').textContent = currentExam.questions.length;
+      document.getElementById('currentQDomain').textContent = q.domain;
+      document.getElementById('questionText').textContent = q.question;
+
+      // Flag state
+      const flagBtn = document.getElementById('flagQuestionBtn');
+      if (currentExam.flagged[idx]) {
+        flagBtn.classList.add('flagged');
+      } else {
+        flagBtn.classList.remove('flagged');
+      }
+
+      // Render options
+      const container = document.getElementById('choicesContainer');
+      container.innerHTML = '';
+
+      const userChoice = currentExam.userAnswers[idx];
+      const elimMap = currentExam.eliminated[idx] || {};
+
+      q.options.forEach((optText, optIdx) => {
+        const item = document.createElement('div');
+        item.className = 'choice-item';
+        if (userChoice === optIdx) item.classList.add('selected');
+        if (elimMap[optIdx]) item.classList.add('eliminated');
+
+        const badge = document.createElement('div');
+        badge.className = 'choice-badge';
+        badge.textContent = LETTERS[optIdx];
+
+        const text = document.createElement('div');
+        text.className = 'choice-content';
+        text.textContent = optText;
+
+        const elimBtn = document.createElement('span');
+        elimBtn.className = 'eliminate-btn';
+        elimBtn.title = 'Strike out / eliminate this choice';
+        elimBtn.textContent = '✕';
+        elimBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!currentExam.eliminated[idx]) currentExam.eliminated[idx] = {};
+          currentExam.eliminated[idx][optIdx] = !currentExam.eliminated[idx][optIdx];
+          renderQuestion(idx);
+        });
+
+        item.appendChild(badge);
+        item.appendChild(text);
+        item.appendChild(elimBtn);
+
+        item.addEventListener('click', () => {
+          currentExam.userAnswers[idx] = optIdx;
+          renderQuestion(idx);
+          updateGridItem(idx);
+          updateAnsweredCount();
+
+          if (currentExam.tutorMode) {
+            showTutorExplanation(idx);
+          }
+        });
+
+        container.appendChild(item);
+      });
+
+      // Tutor mode display
+      const tutorBox = document.getElementById('tutorExplanationBox');
+      if (currentExam.tutorMode && userChoice !== undefined) {
+        showTutorExplanation(idx);
+      } else {
+        tutorBox.classList.remove('show');
+      }
+
+      // Nav buttons
+      document.getElementById('prevQBtn').disabled = (idx === 0);
+      const isLast = (idx === currentExam.questions.length - 1);
+      document.getElementById('nextQBtn').style.display = isLast ? 'none' : 'inline-flex';
+      document.getElementById('finishExamBtn').style.display = isLast ? 'inline-flex' : 'none';
+
+      highlightCurrentInGrid(idx);
+    }
+
+    function showTutorExplanation(idx) {
+      const q = currentExam.questions[idx];
+      const userChoice = currentExam.userAnswers[idx];
+      const tutorBox = document.getElementById('tutorExplanationBox');
+      const tutorText = document.getElementById('tutorExplanationText');
+
+      const isRight = (userChoice === q.correct);
+      const verdictHeader = isRight
+        ? `<strong style="color:var(--accent-green); display:block; margin-bottom:4px;">✓ Correct! Option ${LETTERS[q.correct]} is right.</strong>`
+        : `<strong style="color:var(--accent-red); display:block; margin-bottom:4px;">✗ Incorrect. Correct answer is Option ${LETTERS[q.correct]} (${q.options[q.correct]}).</strong>`;
+
+      tutorText.innerHTML = verdictHeader + q.explanation;
+      tutorBox.classList.add('show');
+    }
+
+    // Question navigation
+    document.getElementById('prevQBtn').addEventListener('click', () => {
+      if (currentExam.currentIndex > 0) renderQuestion(currentExam.currentIndex - 1);
+    });
+
+    document.getElementById('nextQBtn').addEventListener('click', () => {
+      if (currentExam.currentIndex < currentExam.questions.length - 1) {
+        renderQuestion(currentExam.currentIndex + 1);
+      }
+    });
+
+    document.getElementById('clearSelectionBtn').addEventListener('click', () => {
+      delete currentExam.userAnswers[currentExam.currentIndex];
+      renderQuestion(currentExam.currentIndex);
+      updateGridItem(currentExam.currentIndex);
+      updateAnsweredCount();
+    });
+
+    document.getElementById('flagQuestionBtn').addEventListener('click', () => {
+      const idx = currentExam.currentIndex;
+      currentExam.flagged[idx] = !currentExam.flagged[idx];
+      renderQuestion(idx);
+      updateGridItem(idx);
+    });
+
+    // Sidebar Grid
+    function buildNavigatorGrid() {
+      const grid = document.getElementById('questionGrid');
+      grid.innerHTML = '';
+
+      currentExam.questions.forEach((_, idx) => {
+        const item = document.createElement('div');
+        item.className = 'grid-item';
+        item.id = `gridItem_${idx}`;
+        item.textContent = idx + 1;
+
+        item.addEventListener('click', () => renderQuestion(idx));
+        grid.appendChild(item);
+      });
+    }
+
+    function updateGridItem(idx) {
+      const item = document.getElementById(`gridItem_${idx}`);
+      if (!item) return;
+
+      if (currentExam.userAnswers[idx] !== undefined) {
+        item.classList.add('answered');
+      } else {
+        item.classList.remove('answered');
+      }
+
+      if (currentExam.flagged[idx]) {
+        item.classList.add('flagged');
+      } else {
+        item.classList.remove('flagged');
+      }
+    }
+
+    function highlightCurrentInGrid(idx) {
+      document.querySelectorAll('.grid-item').forEach(it => it.classList.remove('current'));
+      const active = document.getElementById(`gridItem_${idx}`);
+      if (active) active.classList.add('current');
+    }
+
+    function updateAnsweredCount() {
+      const answered = Object.keys(currentExam.userAnswers).length;
+      const total = currentExam.questions.length;
+      document.getElementById('answeredSummary').textContent = `${answered} / ${total}`;
+    }
+
+    // Grid filters
+    document.querySelectorAll('.grid-filter-bar .grid-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.grid-filter-bar .grid-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        currentExam.questions.forEach((_, idx) => {
+          const item = document.getElementById(`gridItem_${idx}`);
+          if (!item) return;
+
+          if (filter === 'all') {
+            item.style.display = 'flex';
+          } else if (filter === 'flagged') {
+            item.style.display = currentExam.flagged[idx] ? 'flex' : 'none';
+          } else if (filter === 'unanswered') {
+            item.style.display = (currentExam.userAnswers[idx] === undefined) ? 'flex' : 'none';
+          }
+        });
+      });
+    });
+
+    // Submit Exam
+    document.getElementById('finishExamBtn').addEventListener('click', confirmSubmit);
+    document.getElementById('sidebarSubmitBtn').addEventListener('click', confirmSubmit);
+
+    function confirmSubmit() {
+      const answered = Object.keys(currentExam.userAnswers).length;
+      const total = currentExam.questions.length;
+      const unanswered = total - answered;
+
+      let msg = `Ready to submit your exam for grading?`;
+      if (unanswered > 0) {
+        msg = `⚠️ You still have ${unanswered} unanswered question(s). Are you sure you want to finalize and grade your test now?`;
+      }
+
+      if (confirm(msg)) {
+        submitExam();
+      }
+    }
+
+    function submitExam() {
+      clearInterval(timerInterval);
+      currentExam.endTime = Date.now();
+      examScreen.style.display = 'none';
+      timerBox.style.display = 'none';
+      pauseBtn.style.display = 'none';
+      resultsScreen.style.display = 'block';
+
+      computeAndDisplayResults();
+    }
+
+    function computeAndDisplayResults() {
+      const total = currentExam.questions.length;
+      let correctCount = 0;
+      const domainStats = {};
+
+      currentExam.questions.forEach((q, idx) => {
+        if (!domainStats[q.domain]) domainStats[q.domain] = { total: 0, correct: 0 };
+        domainStats[q.domain].total++;
+
+        const userAns = currentExam.userAnswers[idx];
+        const isRight = (userAns === q.correct);
+        if (isRight) {
+          correctCount++;
+          domainStats[q.domain].correct++;
+        }
+      });
+
+      const accuracyPct = Math.round((correctCount / total) * 100);
+      // CompTIA 100-900 scaling formula
+      const scaledScore = Math.round(100 + (correctCount / total) * 800);
+      const isPassed = (scaledScore >= 750);
+
+      // Display main stats
+      const verdict = document.getElementById('verdictBadge');
+      verdict.textContent = isPassed ? 'PASS / CERTIFIED READY' : 'FAIL / NEEDS REVIEW';
+      verdict.className = `verdict-badge ${isPassed ? 'verdict-pass' : 'verdict-fail'}`;
+
+      document.getElementById('scaledScoreDisplay').textContent = `${scaledScore} / 900`;
+      document.getElementById('rawScoreDisplay').textContent = `${correctCount} of ${total} correct (${accuracyPct}%)`;
+
+      document.getElementById('statCorrect').textContent = `${correctCount} / ${total}`;
+      document.getElementById('statAccuracy').textContent = `${accuracyPct}%`;
+
+      const elapsedSec = Math.round((currentExam.endTime - currentExam.startTime) / 1000);
+      const m = Math.floor(elapsedSec / 60);
+      const s = elapsedSec % 60;
+      document.getElementById('statTimeSpent').textContent = `${m}m ${s}s`;
+
+      // Render domain breakdown progress bars
+      const domainContainer = document.getElementById('domainBarsContainer');
+      domainContainer.innerHTML = '';
+
+      for (const dom in domainStats) {
+        const stats = domainStats[dom];
+        const pct = Math.round((stats.correct / stats.total) * 100);
+
+        const row = document.createElement('div');
+        row.className = 'domain-row';
+        row.innerHTML = `
+          <div class="domain-row-header">
+            <span>${dom}</span>
+            <span>${stats.correct} / ${stats.total} (${pct}%)</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: ${pct}%; background-color: ${pct >= 80 ? 'var(--accent-green)' : (pct >= 60 ? 'var(--accent-amber)' : 'var(--accent-red)')};"></div>
+          </div>
+        `;
+        domainContainer.appendChild(row);
+      }
+
+      // Render detailed review cards
+      renderReviewCards('all');
+    }
+
+    function renderReviewCards(filter) {
+      const container = document.getElementById('reviewCardsContainer');
+      container.innerHTML = '';
+
+      currentExam.questions.forEach((q, idx) => {
+        const userAns = currentExam.userAnswers[idx];
+        const isRight = (userAns === q.correct);
+        const isFlagged = Boolean(currentExam.flagged[idx]);
+
+        if (filter === 'incorrect' && isRight) return;
+        if (filter === 'correct' && !isRight) return;
+        if (filter === 'flagged' && !isFlagged) return;
+
+        const card = document.createElement('div');
+        card.className = `review-card ${isRight ? 'correct' : 'incorrect'}`;
+
+        const meta = document.createElement('div');
+        meta.className = 'review-meta';
+        meta.innerHTML = `
+          <span>Question ${idx + 1} • ${q.domain} ${isFlagged ? '• 📌 Flagged' : ''}</span>
+          <span style="font-weight: 700; color: ${isRight ? 'var(--accent-green)' : 'var(--accent-red)'};">
+            ${isRight ? '✓ CORRECT' : '✗ INCORRECT'}
+          </span>
+        `;
+
+        const qText = document.createElement('div');
+        qText.className = 'review-q-text';
+        qText.textContent = q.question;
+
+        const choicesDiv = document.createElement('div');
+        choicesDiv.className = 'review-choices';
+
+        q.options.forEach((optText, optIdx) => {
+          const choice = document.createElement('div');
+          choice.className = 'review-choice';
+
+          const isUserChoice = (userAns === optIdx);
+          const isCorrectChoice = (q.correct === optIdx);
+
+          if (isCorrectChoice) choice.classList.add('correct-choice');
+          if (isUserChoice && !isCorrectChoice) choice.classList.add('user-selected');
+
+          let indicator = '';
+          if (isCorrectChoice && isUserChoice) {
+            indicator = '<span style="color: var(--accent-green); font-weight: 800; margin-left:auto;">✓ Your Correct Answer</span>';
+          } else if (isCorrectChoice) {
+            indicator = '<span style="color: var(--accent-green); font-weight: 800; margin-left:auto;">✓ Correct Answer</span>';
+          } else if (isUserChoice) {
+            indicator = '<span style="color: var(--accent-red); font-weight: 800; margin-left:auto;">✗ Your Answer</span>';
+          }
+
+          choice.innerHTML = `
+            <strong style="font-family: var(--font-mono); width: 22px;">${LETTERS[optIdx]}</strong>
+            <span style="flex: 1;">${optText}</span>
+            ${indicator}
+          `;
+          choicesDiv.appendChild(choice);
+        });
+
+        const explanation = document.createElement('div');
+        explanation.className = 'review-explanation';
+        explanation.innerHTML = `
+          <strong style="color: var(--text-primary); display: block; margin-bottom: 4px;">💡 CompTIA / Jason Dion Rationale:</strong>
+          ${q.explanation || 'No explanation available.'}
+        `;
+
+        card.appendChild(meta);
+        card.appendChild(qText);
+        card.appendChild(choicesDiv);
+        card.appendChild(explanation);
+        container.appendChild(card);
+      });
+    }
+
+    // Review filter button clicks
+    document.querySelectorAll('.review-filter-bar .grid-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.review-filter-bar .grid-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderReviewCards(btn.dataset.rfilter);
+      });
+    });
+
+    // Retake Missed Questions Button
+    document.getElementById('retakeWrongBtn').addEventListener('click', () => {
+      const missed = [];
+      currentExam.questions.forEach((q, idx) => {
+        const userAns = currentExam.userAnswers[idx];
+        if (userAns !== q.correct) missed.push(q);
+      });
+
+      if (missed.length === 0) {
+        alert("🎉 Congratulations! You achieved 100% correct answers. There are no missed questions to practice!");
+        return;
+      }
+
+      initNewExam('custom', true, false, true, null, missed);
+    });
+
+    // Retake Full Exam Button
+    document.getElementById('retakeFullBtn').addEventListener('click', () => {
+      initNewExam('custom', currentExam.tutorMode, currentExam.untimed, true, null, currentExam.questions);
+    });
+
+    // Back to Setup Button
+    document.getElementById('newExamBtn').addEventListener('click', () => {
+      resultsScreen.style.display = 'none';
+      setupScreen.style.display = 'block';
+    });
+
+    // Print Report Button
+    document.getElementById('printReportBtn').addEventListener('click', () => {
+      window.print();
+    });
+
+  </script>
+</body>
+</html>
