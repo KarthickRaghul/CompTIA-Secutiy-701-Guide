@@ -82,17 +82,3 @@ All notes are stored in this repository and available for 1-click download:
 1. [Crucial Exams](https://crucialexams.com/study/tests/comptia/sy0-701/auto)
 2. [Cert Preps](https://certpreps.com/exams/secplus/)
 3. [Exam Compass](https://www.examcompass.com/comptia/security-plus-certification/free-security-plus-practice-tests)
-
----
-
-## ⚙️ Enabling GitHub Pages for this Repository
-
-To host this portal for free on your own GitHub Pages:
-1. Go to your repository on GitHub: **`https://github.com/KarthickRaghul/CompTIA-Secutiy-701-Guide`**
-2. Click **Settings** (top right tab) → **Pages** (left sidebar).
-3. Under **Build and deployment**:
-   - **Source:** Deploy from a branch
-   - **Branch:** `main`
-   - **Folder:** `/ (root)`
-4. Click **Save**. Within 1–2 minutes, your portal will be live at:
-   `https://karthickraghul.github.io/CompTIA-Secutiy-701-Guide/`

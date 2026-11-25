@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://karthickraghul.github.io/CompTIA-Secutiy-701-Guide/sitemap.xml
