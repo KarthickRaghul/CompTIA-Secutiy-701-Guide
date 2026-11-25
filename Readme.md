@@ -51,8 +51,8 @@ All notes are stored in this repository and available for 1-click download:
 - 📄 **[Professor Messer Security+ Comprehensive Course Notes (PDF)](Notes/Professor%20Messer%20Notes.pdf)** (~10.6 MB)
 - 📄 **[Jason Dion Security+ Training Notes (PDF)](Notes/Dions%20Notes.pdf)** (~3.9 MB)
 - 📄 **[Official CompTIA Security+ SY0-701 Exam Objectives (PDF)](CompTIA-Security-Plus-SY0-701-Exam-Objectives.pdf)** (191 KB)
-- 📄 **[Security+ Ports Sorted by Port Number Cheat Sheet (PDF)](Security+_Ports_Sorted_By_Port_Number_SY0-701.pdf)** (7 KB)
-- 📄 **[Cybersecurity & Network Troubleshooting Commands Manual (PDF)](Commands.pdf)** (132 KB)
+- 📄 **[Security+ Ports Sorted by Port Number Cheat Sheet (PDF)](Ports%20and%20commands/Security+_Ports_Sorted_By_Port_Number_SY0-701.pdf)** (7 KB)
+- 📄 **[Cybersecurity & Network Troubleshooting Commands Manual (PDF)](Ports%20and%20commands/Commands.pdf)** (132 KB)
 
 ---
 
